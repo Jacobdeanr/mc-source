@@ -1,0 +1,3 @@
+[submodule "libs/fNbt"]
+	path = libs/fNbt
+	url = https://github.com/h45h74x/fNbt
