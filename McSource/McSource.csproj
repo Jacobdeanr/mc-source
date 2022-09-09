@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\libs\fNbt\fNbt\fNbt.csproj" />
+      <ProjectReference Include="..\libs\vmfSharp\VmfSharp\VmfSharp.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="VarintBitConverter" Version="1.0.0" />
+    </ItemGroup>
+
+</Project>
