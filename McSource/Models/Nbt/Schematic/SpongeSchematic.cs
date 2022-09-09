@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using fNbt;
 using McSource.Logging;
 using McSource.Models.Nbt.BlockEntities;
 using McSource.Models.Nbt.Blocks;
+using McSource.Models.Nbt.Structs;
 using McSource.Models.Vmf;
+using VmfSharp;
 
 namespace McSource.Models.Nbt.Schematic
 {
@@ -18,9 +21,9 @@ namespace McSource.Models.Nbt.Schematic
     {
       return new Dimensions3D
       {
-        Height = rootTag.Get<NbtShort>("Height")!.Value,
-        Width = rootTag.Get<NbtShort>("Width")!.Value,
-        Length = rootTag.Get<NbtShort>("Length")!.Value
+        DY = rootTag.Get<NbtShort>("Height")!.Value,
+        DX = rootTag.Get<NbtShort>("Width")!.Value,
+        DZ = rootTag.Get<NbtShort>("Length")!.Value
       };
     }
 
@@ -29,9 +32,9 @@ namespace McSource.Models.Nbt.Schematic
       // index = (y * length + z) * width + x
       return new Coordinates
       {
-        Y = index / (Dimensions.Width * Dimensions.Length),
-        Z = (index % (Dimensions.Width * Dimensions.Length)) / Dimensions.Width,
-        X = (index % (Dimensions.Width * Dimensions.Length)) % Dimensions.Width
+        Y = index / (Dimensions.DX * Dimensions.DZ),
+        Z = (index % (Dimensions.DX * Dimensions.DZ)) / Dimensions.DX,
+        X = (index % (Dimensions.DX * Dimensions.DZ)) % Dimensions.DX,
       };
     }
 
@@ -48,7 +51,7 @@ namespace McSource.Models.Nbt.Schematic
     {
       return rootTag
         .Get<NbtList>("BlockEntities")!
-        .Select(tag => BlockEntity.FromTag((NbtCompound)tag))
+        .Select(tag => BlockEntity.FromTag((NbtCompound) tag))
         .ToArray();
     }
 
@@ -79,10 +82,18 @@ namespace McSource.Models.Nbt.Schematic
     public override Map ToModel()
     {
       var map = new Map();
-      map.World = new World(map)
+      map.World = new World(map) {Solids = new List<IVmfSerializable>()};
+
+      foreach (var block in Blocks)
       {
-        Solids = Blocks.Select(b => b.ToModel(map)).ToArray()
-      };
+        if (block?.ToModel(map) == null)
+        {
+          continue;
+        }
+
+        map.World.Solids.Add(block.ToModel(map));
+      }
+
       return map;
     }
 
@@ -93,8 +104,8 @@ namespace McSource.Models.Nbt.Schematic
     /// <exception cref="ArgumentException"></exception>
     public override ISchematic Load(NbtCompound rootTag)
     {
-      Blocks.Clear();
       Dimensions = LoadDimensions(rootTag);
+      Blocks = new Block[Dimensions.DX, Dimensions.DY, Dimensions.DZ];
 
       var palette = LoadPalette(rootTag);
       var blockEntities = LoadBlockEntities(rootTag);
@@ -122,10 +133,14 @@ namespace McSource.Models.Nbt.Schematic
           }
         }
 
-
         var coordinates = CalcBlockCoordinates(index, Dimensions);
         var blockEntity = blockEntities.FirstOrDefault(be => coordinates == be.Coordinates);
-        Blocks.Add(Block.FromString(palette[value]!, coordinates, blockEntity));
+
+        var block = Block.Create(this, BlockId.FromString(palette[value]), coordinates, blockEntity);
+        if (block != null)
+        {
+          Add(block, coordinates);
+        }
 
         index++;
       }

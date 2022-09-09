@@ -32,7 +32,13 @@ namespace McSource.Models.Vmf
 
       foreach (var solid in Solids)
       {
+        if (solid == null)
+        {
+          continue;
+        }
+
         rootTag.Value.Add(solid.ToVmf(indentation));
+
       }
 
       return rootTag;

@@ -7,11 +7,14 @@ namespace McSource.Models.Nbt.Structs
   {
     public string Id { get; set; }
     public string Namespace { get; set; }
+    
+    public string Properties { get; set; }
 
     public BlockId(string id, string @namespace = "minecraft")
     {
       Id = id;
       Namespace = @namespace;
+      Properties = null; // todo
     }
 
     public static BlockId FromString(string idString)

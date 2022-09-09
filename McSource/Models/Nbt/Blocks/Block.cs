@@ -1,17 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using McSource.Models.Nbt.BlockEntities;
 using McSource.Models.Nbt.Blocks.Components;
 using McSource.Models.Nbt.Properties;
+using McSource.Models.Nbt.Schematic;
 using McSource.Models.Nbt.Structs;
 using McSource.Models.Vmf;
 using VmfSharp;
 
 namespace McSource.Models.Nbt.Blocks
 {
+  public enum NeighborPosition
+  {
+    Top,
+    Bottom,
+    East,
+    West,
+    North,
+    South
+  }
+
   public abstract class Block : IVmfModelConvertible<Vmf.Solid>
   {
+    public ISchematic Parent { get; set; }
+    
     public Dimensions3D Dimensions { get; protected set; }
 
     /// <summary>
@@ -33,12 +47,13 @@ namespace McSource.Models.Nbt.Blocks
 
     public Texture Texture { get; }
 
-    protected Block(string idString, Coordinates coordinates, BlockEntity? blockEntity = default)
+    protected Block(ISchematic parent, BlockId blockId, Coordinates coordinates, BlockEntity? blockEntity = default)
     {
+      Parent = parent;
+      BlockId = blockId;
       BlockEntity = blockEntity;
       Coordinates = coordinates;
-      BlockId = BlockId.FromString(idString);
-      Properties = ParseProperties(idString);
+      Properties = ParseProperties(blockId.Properties);
       Dimensions = new Dimensions3D(Constants.BlockSize);
       Texture = new Texture(this, BlockId.ToPath());
     }
@@ -50,11 +65,16 @@ namespace McSource.Models.Nbt.Blocks
       return default;
     }
 
-    public static Block FromString(string blockString, Coordinates coordinates, BlockEntity? blockEntity = default)
+    public static Block? Create(ISchematic parent, BlockId blockId, Coordinates coordinates, BlockEntity? blockEntity = default)
     {
       // todo catch special blocks here
 
-      return new DefaultBlock(blockString, coordinates, blockEntity);
+      if (blockId.Id.Equals("air"))
+      {
+        return null;
+      }
+
+      return new DefaultBlock(parent, blockId, coordinates, blockEntity);
     }
 
     public override string ToString()
@@ -62,6 +82,8 @@ namespace McSource.Models.Nbt.Blocks
       return $"{Coordinates}: '{BlockId}'";
     }
 
-    public abstract Vmf.Solid ToModel(IVmfRoot root);
+    public bool IsEncased => Parent.GetNeighbors(this).Count == 6;
+
+    public abstract Vmf.Solid? ToModel(IVmfRoot root);
   }
 }

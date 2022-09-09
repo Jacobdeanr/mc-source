@@ -20,7 +20,7 @@ namespace McSource.Models.Nbt.BlockEntities
       try
       {
         var id = tag.Get<NbtString>("Id")!.Value;
-        var coordinates = Coordinates.FromPos(tag.Get<NbtIntArray>("Pos")!.Value);
+        var coordinates = new Coordinates(tag.Get<NbtIntArray>("Pos")!.Value);
 
         if (tag.TryGet("Text1", out var signText1) &&
             tag.TryGet("Text2", out var signText2) &&

@@ -1,4 +1,7 @@
-﻿using JetBrains.Annotations;
+﻿using System.Text;
+using JetBrains.Annotations;
+using McSource.Models.Nbt;
+using McSource.Models.Nbt.Blocks;
 using McSource.Models.Vmf.Abstract;
 using VmfSharp;
 
@@ -21,6 +24,13 @@ namespace McSource.Models.Vmf
 
     public Plane([NotNull] IVmfRoot root) : base(root)
     {
+    }
+
+    public Plane([NotNull] IVmfRoot root, Vertex bottomLeft, Vertex topLeft, Vertex topRight) : this(root)
+    {
+      TopLeft = topLeft;
+      TopRight = topRight;
+      BottomLeft = bottomLeft;
     }
   }
 }

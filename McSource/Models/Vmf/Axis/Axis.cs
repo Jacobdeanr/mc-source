@@ -1,4 +1,5 @@
-﻿using McSource.Models.Vmf.Abstract;
+﻿using System.Globalization;
+using McSource.Models.Vmf.Abstract;
 using VmfSharp;
 
 namespace McSource.Models.Vmf.Axis
@@ -17,9 +18,9 @@ namespace McSource.Models.Vmf.Axis
 
     public int Translation { get; set; }
 
-    public decimal Scaling { get; set; }
+    public double Scaling { get; set; }
 
-    protected Axis(IVmfRoot root, int x, int y, int z, int translation, decimal scaling) : base(root)
+    protected Axis(IVmfRoot root, int x, int y, int z, int translation, double scaling) : base(root)
     {
       X = x;
       Y = y;
@@ -31,7 +32,7 @@ namespace McSource.Models.Vmf.Axis
 
     public override string ToString()
     {
-      return $"[{X} {Y} {Z} {Translation}] {Scaling}";
+      return $"[{X} {Y} {Z} {Translation}] {Scaling.ToString(CultureInfo.GetCultureInfo("en-US"))}";
     }
   }
 }

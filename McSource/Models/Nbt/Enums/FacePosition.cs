@@ -1,13 +1,13 @@
 ﻿namespace McSource.Models.Nbt.Enums
 {
-  public enum SidePosition
+  public enum FacePosition
   {
     Top,
     Bottom,
 
-    Front,
-    Back,
-    Left,
-    Right
+    North,
+    South,
+    West,
+    East
   }
 }

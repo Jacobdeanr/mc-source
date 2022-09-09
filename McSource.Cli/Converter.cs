@@ -10,6 +10,13 @@ using VmfSharp;
 
 namespace McSource.Cli
 {
+  /* Milestones:
+   * todo: create skybox
+   * todo: parse block properties
+   * todo: parse block entity data
+   * todo: custom block behaviors
+  */
+  
   public class Converter
   {
     public void Convert(string schematicPath, string outputPath)
@@ -41,7 +48,7 @@ namespace McSource.Cli
         Log.Error("Could not serialize map to file", e);
       }
       
-      Log.Info("Successfully created vmf file");
+      Log.Info($"Successfully created vmf file '{outputPath}'");
     }
   }
 }

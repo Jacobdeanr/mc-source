@@ -5,25 +5,25 @@ namespace McSource.Models.Nbt.Blocks.Components
 {
   public class Texture
   {
-    private IDictionary<SidePosition, Side> _faces;
+    private IDictionary<FacePosition, Face> _faces;
 
-    public IReadOnlyCollection<Side> Faces => (IReadOnlyCollection<Side>) _faces.Values;
+    public IReadOnlyCollection<Face> Faces => (IReadOnlyCollection<Face>) _faces.Values;
 
-    public Side GetFace(SidePosition pos)
+    public Face GetFace(FacePosition pos)
     {
       return _faces[pos];
     }
 
     public Texture(Block parent)
     {
-      _faces = new Dictionary<SidePosition, Side>()
+      _faces = new Dictionary<FacePosition, Face>()
       {
-        {SidePosition.Top, new Side(parent, SidePosition.Top)},
-        {SidePosition.Bottom, new Side(parent, SidePosition.Bottom)},
-        {SidePosition.Left, new Side(parent, SidePosition.Left)},
-        {SidePosition.Right, new Side(parent, SidePosition.Right)},
-        {SidePosition.Front, new Side(parent, SidePosition.Front)},
-        {SidePosition.Back, new Side(parent, SidePosition.Back)},
+        {FacePosition.South, new Face(parent, FacePosition.South)},
+        {FacePosition.North, new Face(parent, FacePosition.North)},
+        {FacePosition.West, new Face(parent, FacePosition.West)},
+        {FacePosition.East, new Face(parent, FacePosition.East)},
+        {FacePosition.Top, new Face(parent, FacePosition.Top)},
+        {FacePosition.Bottom, new Face(parent, FacePosition.Bottom)},
       };
     }
 
@@ -58,12 +58,12 @@ namespace McSource.Models.Nbt.Blocks.Components
 
     public void Set(string top, string right, string bottom, string left, string front, string back)
     {
-      GetFace(SidePosition.Top).MaterialPath = top;
-      GetFace(SidePosition.Back).MaterialPath = back;
-      GetFace(SidePosition.Left).MaterialPath = left;
-      GetFace(SidePosition.Front).MaterialPath = front;
-      GetFace(SidePosition.Right).MaterialPath = right;
-      GetFace(SidePosition.Bottom).MaterialPath = bottom;
+      GetFace(FacePosition.Top).MaterialPath = top;
+      GetFace(FacePosition.South).MaterialPath = back;
+      GetFace(FacePosition.West).MaterialPath = left;
+      GetFace(FacePosition.North).MaterialPath = front;
+      GetFace(FacePosition.East).MaterialPath = right;
+      GetFace(FacePosition.Bottom).MaterialPath = bottom;
     }
   }
 }

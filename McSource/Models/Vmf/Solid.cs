@@ -27,6 +27,6 @@ namespace McSource.Models.Vmf
     }
 
     private int _idCounter;
-    public int NewId => _idCounter++;
+    public int NewId => ++_idCounter;
   }
 }

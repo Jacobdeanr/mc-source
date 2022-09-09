@@ -2,7 +2,7 @@
 {
   public class Dimensions3D : Dimensions2D
   {
-    public short Height { get; set; }
+    public short DY { get; set; }
 
     public Dimensions3D()
     {
@@ -13,32 +13,21 @@
     {
     }
 
-    public Dimensions3D(short height, short width, short length)
+    public Dimensions3D(short dy, short dx, short dz)
     {
-      Height = height;
-      Width = width;
-      Length = length;
-    }
-  }
-
-  public class Dimensions2D
-  {
-    public short Width { get; set; }
-    public short Length { get; set; }
-
-    public Dimensions2D()
-    {
+      DY = dy;
+      DX = dx;
+      DZ = dz;
     }
 
-    public Dimensions2D(short size)
-      : this(size, size)
+    public bool IsInBounds(Coordinates c)
     {
+      return IsInBounds((short) c.X, (short) c.Y, (short) c.Z);
     }
 
-    public Dimensions2D(short width, short length)
+    public bool IsInBounds(short x, short y, short z)
     {
-      Width = width;
-      Length = length;
+      return x >= 0 && y >= 0 && z >= 0 && x < DX && y < DY && z < DZ;
     }
   }
 }

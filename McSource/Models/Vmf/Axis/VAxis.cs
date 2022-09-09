@@ -14,7 +14,7 @@ namespace McSource.Models.Vmf.Axis
       return new VmfString("vaxis", ToString());
     }
 
-    public VAxis(IVmfRoot root, int x, int y, int z, int translation, decimal scaling)
+    public VAxis(IVmfRoot root, int x, int y, int z, int translation, double scaling)
       : base(root, x, y, z, translation, scaling)
     {
     }
