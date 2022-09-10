@@ -1,20 +1,18 @@
 ﻿using System.Collections.Generic;
-using McSource.Models.Nbt.Blocks;
 using McSource.Models.Nbt.Blocks.Abstract;
-using McSource.Models.Nbt.Enums;
 using McSource.Models.Vmf;
 
 namespace McSource.Models.Nbt.Schematic
 {
   public abstract class Schematic<T> : ISchematic
   {
-    public string Name { get; set; }
-
-    protected Schematic(string name)
+    public Config.Config Config { get; set; }
+    
+    public Schematic(Config.Config config)
     {
-      Name = name;
+      Config = config;
     }
-
+    
     public Coordinates Offset { get; protected set; } = new Coordinates(0, 0, 0);
 
     public Dimensions3D Dimensions { get; protected set; } = new Dimensions3D();

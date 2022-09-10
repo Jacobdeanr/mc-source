@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using McSource.Logging;
+using McSource.Models.Config;
 using McSource.Models.Nbt.BlockEntities;
 using McSource.Models.Nbt.Enums;
 using McSource.Models.Nbt.Properties;
@@ -13,6 +15,8 @@ namespace McSource.Models.Nbt.Blocks.Abstract
 {
   public abstract class Block : IVmfModelConvertible<Vmf.Solid>
   {
+    protected Config.Block? Config { get; }
+
     /// <summary>
     /// Parent Schematic
     /// </summary>
@@ -43,26 +47,68 @@ namespace McSource.Models.Nbt.Blocks.Abstract
     /// </summary>
     public BlockEntity? BlockEntity { get; set; }
 
-    protected Block(ISchematic parent, BlockInfo info, Coordinates coordinates, BlockEntity? blockEntity = default)
+    protected Block(ISchematic parent, BlockInfo info, Coordinates coordinates, BlockEntity? blockEntity = default,
+      Config.Block? config = default)
     {
       Parent = parent;
       Info = info;
       BlockEntity = blockEntity;
       Coordinates = coordinates;
       Dimensions = new Dimensions3D(1);
+
+      Config = config;
+    }
+
+    private static Config.Block? GetConfigEntry(Config.Config config, BlockInfo info)
+    {
+      if (!config.Textures.Namespaces.TryGetValue(info.Namespace, out var ns))
+      {
+        return default;
+      }
+
+      if (!ns.Blocks.TryGetValue(info.Id, out var block))
+      {
+        return default;
+      }
+
+      return block;
     }
 
     public static Block Create(ISchematic parent,
       BlockInfo blockInfo, Coordinates coordinates, BlockEntity? blockEntity = default)
     {
-      // todo catch special blocks here
+      // todo: Catch special blocks here
 
-      if (blockInfo.Id.Equals("air"))
+      var config = GetConfigEntry(parent.Config, blockInfo);
+      switch (config?.Type)
       {
-        return new IgnoredBlock(parent, blockInfo, coordinates, blockEntity);
+        case BlockType.Door:
+        case BlockType.Fence:
+        case BlockType.FenceGate:
+        case BlockType.Fire:
+        case BlockType.Flat:
+        case BlockType.Ladder:
+        case BlockType.Pane:
+        case BlockType.Plant:
+        case BlockType.Rod:
+        case BlockType.Sign:
+        case BlockType.Slab:
+        case BlockType.Stairs:
+        case BlockType.Torch:
+        case BlockType.Trapdoor:
+          Log.Warning($"{nameof(BlockType)} '{config.Type}' is not implemented. Using {nameof(SolidBlock)} instead");
+          break;
+        case BlockType.Ignored:
+          return new IgnoredBlock(parent, blockInfo, coordinates, blockEntity);
+        case BlockType.Block:
+          // Use fallback method return
+          break;
+        default:
+          Log.Error($"Invalid {nameof(BlockType)} '{config?.Type}'. Using {nameof(SolidBlock)} instead");
+          break;
       }
 
-      return new DefaultBlock(parent, blockInfo, coordinates, blockEntity);
+      return new SolidBlock(parent, blockInfo, coordinates, blockEntity);
     }
 
     public IDictionary<McPosition3D, Block?> GetNeighbors() =>

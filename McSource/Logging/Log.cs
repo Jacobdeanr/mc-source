@@ -36,13 +36,13 @@ namespace McSource.Logging
 
     public static void Error(object? data, Exception e)
     {
-      Error($"{e.Message}: {data}");
+      Error($"{data}: {e.Message}");
       Console.Error.WriteLine(e.StackTrace);
     }
 
     public static void Critical(object? data, Exception e)
     {
-      Critical($"{e.Message}: {data}");
+      Critical($"{data}: {e.Message}");
       Console.Error.WriteLine(e.StackTrace);
     }
 

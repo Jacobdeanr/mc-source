@@ -8,8 +8,7 @@ namespace McSource.Models.Nbt.Schematic
 {
   public interface ISchematic
   {
-    public string Name { get; }
-
+    public Config.Config Config { get; }
     public Coordinates Offset { get; }
 
     public Dimensions3D Dimensions { get; }

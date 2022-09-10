@@ -7,12 +7,17 @@ using McSource.Models.Nbt.Properties;
 
 namespace McSource.Models.Nbt.Structs
 {
-  public struct BlockInfo
+  public class BlockInfo
   {
-    public string Id { get; set; }
-    public string Namespace { get; set; }
-    public ICollection<Property> Properties { get; set; }
+    public string Id { get; set; } = string.Empty;
+    public string Namespace { get; set; } = "minecraft";
+    public ICollection<Property> Properties { get; set; } = Array.Empty<Property>();
 
+    public BlockInfo()
+    {
+      
+    }
+    
     public BlockInfo(string ns, string id, ICollection<Property> properties) : this(ns, id)
     {
       Properties = properties;
@@ -31,8 +36,6 @@ namespace McSource.Models.Nbt.Structs
     public BlockInfo(string id)
     {
       Id = id;
-      Namespace = "minecraft";
-      Properties = Array.Empty<Property>();
     }
 
     public static BlockInfo FromString(string str)

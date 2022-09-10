@@ -10,30 +10,34 @@ using VmfSharp;
 
 namespace McSource.Cli
 {
-  /* Milestones:
-   * todo: create skybox
-   * todo: custom block behaviors
-  */
-  
   public class Converter
   {
     public void Convert(string schematicPath, string outputPath)
     {
       ISchematic? schematic = null;
-
+      
+      var config = Models.Config.Config.FromFile(@"C:\Users\Simon\mc-source\mc-source\config.yml");
+      if (config == null)
+      {
+        Log.Error("Could not load config");
+        return;
+      }
+      
       try
       {
         var nbtFile = new NbtFile();
         nbtFile.LoadFromFile(schematicPath);
-        schematic = SpongeSchematic.FromTag(nbtFile.RootTag);
+        schematic = SpongeSchematic.FromTag(nbtFile.RootTag, config);
       }
       catch (Exception e)
       {
         Log.Error("Could not read schematic file", e);
+        return;
       }
 
       if (schematic == null)
       {
+        Log.Error("Could not read schematic file");
         return;
       }
 
@@ -44,6 +48,7 @@ namespace McSource.Cli
       catch (Exception e)
       {
         Log.Error("Could not serialize map to file", e);
+        return;
       }
       
       Log.Info($"Successfully created vmf file '{outputPath}'");

@@ -1,598 +1,815 @@
 ﻿---
-basePath: "C\\:\\Program Files \(x86\)\\Steam\\steamapps\\common\\GarrysMod\\garrysmod\\materials\\minecraft\\"
-
+materialsPath: "C\\:\\Program Files (x86)\\Steam\\steamapps\\common\\GarrysMod\\garrysmod\\materials\\minecraft\\"
 textures:
-  acacia_door:
-    parts:
-      lower: door_acacia_lower
-      upper: door_acacia_upper
-  acacia_fence: planks_acacia
-  acacia_fence_gate: planks_acacia
-  acacia_leaves: leaves_acacia
-  acacia_log:
-    sides:
-      sides: log_acacia
-      top: log_acacia_top
-  acacia_planks: planks_acacia
-  acacia_sapling: sapling_acacia
-  acacia_slab: planks_acacia
-  activator_rail:
-    states:
-      default: rail_detector
-      powered: rail_detector_powered
-  allium: flower_allium
-  andesite: stone_andesite
-  andesite_slab: stone_andesite
-  anvil:
-    states:
-      - sides:
-          base: anvil_base
-          top: anvil_top_damaged_0
-      - sides:
-          base: anvil_base
-          top: anvil_top_damaged_1
-      - sides:
-          base: anvil_base
-          top: anvil_top_damaged_2
-  bed:
-    parts:
-      - part: head
+  minecraft:
+    air:
+      type: ignored
+    acacia_door:
+      type: block
+      translucent: false
+      texture:
+        parts:
+          lower: door_acacia_lower
+          upper: door_acacia_upper
+    acacia_fence:
+      texture: planks_acacia
+    acacia_fence_gate:
+      texture: planks_acacia
+    acacia_leaves:
+      texture: leaves_acacia
+    acacia_log:
+      texture:
         sides:
-          end: bed_head_end
-          side: bed_head_side
-          top: bed_head_top
-      - part: feet
+          sides: log_acacia
+          top: log_acacia_top
+    acacia_planks:
+      texture: planks_acacia
+    acacia_sapling:
+      texture: sapling_acacia
+    acacia_slab:
+      texture: planks_acacia
+    activator_rail:
+      texture:
+        states:
+          default: rail_detector
+          powered: rail_detector_powered
+    allium:
+      texture: flower_allium
+    andesite:
+      texture: stone_andesite
+    andesite_slab:
+      texture: stone_andesite
+    anvil:
+      texture:
+        states:
+          - sides:
+              base: anvil_base
+              top: anvil_top_damaged_0
+          - sides:
+              base: anvil_base
+              top: anvil_top_damaged_1
+          - sides:
+              base: anvil_base
+              top: anvil_top_damaged_2
+    bed:
+      texture:
+        parts:
+          head:
+            sides:
+              end: bed_head_end
+              side: bed_head_side
+              top: bed_head_top
+          feet:
+            sides:
+              end: bed_feet_end
+              side: bed_feet_side
+              top: bed_feet_top
+    beetroots:
+      texture:
+        stages:
+          - beetroots_stage_0
+          - beetroots_stage_1
+          - beetroots_stage_2
+          - beetroots_stage_3
+    birch_door:
+      texture:
+        parts:
+          lower: door_birch_lower
+          upper: door_birch_upper
+    birch_fence:
+      texture: planks_birch
+    birch_fence_gate:
+      texture: planks_birch
+    birch_leaves:
+      texture: leaves_birch
+    birch_log:
+      texture:
         sides:
-          end: bed_feet_end
-          side: bed_feet_side
-          top: bed_feet_top
-  beetroots:
-    stages:
-      - beetroots_stage_0
-      - beetroots_stage_1
-      - beetroots_stage_2
-      - beetroots_stage_3
-  birch_door:
-    parts:
-      lower: door_birch_lower
-      upper: door_birch_upper
-  birch_fence: planks_birch
-  birch_fence_gate: planks_birch
-  birch_leaves: leaves_birch
-  birch_log:
-    sides:
-      sides: log_birch
-      top: log_birch_top
-  birch_planks: planks_birch
-  birch_sapling: sapling_birch
-  birch_slab: planks_birch
-  black_stained_glass:
-    translucent: true
-    texture: glass_black
-  black_wool: wool_colored_black
-  blue_concrete: hardened_clay_stained_blue
-  blue_orchid: flower_blue_orchid
-  blue_stained_glass:
-    translucent: true
-    texture: glass_blue
-  blue_terracotta: hardened_clay_stained_blue
-  blue_wool: wool_colored_blue
-  bone_block:
-    sides:
-      side: bone_block_side
-      top: bone_block_top
-  brewing_stand:
-    parts:
-      base: brewing_stand_base
-      stand: brewing_stand
-  brown_concrete: hardened_clay_stained_brown
-  brown_mushroom: mushroom_brown
-  brown_stained_glass:
-    translucent: true
-    texture: glass_brown
-  brown_terracotta: hardened_clay_stained_brown
-  brown_wool: wool_colored_brown
-  cactus:
-    sides:
-      bottom: cactus_bottom
-      side: cactus_side
-      top: cactus_top
-  cake:
-    sides:
-      bottom: cake_bottom
-      inner: cake_inner
-      side: cake_side
-      top: cake_top
-  carrots:
-    stage:
-      - carrots_stage_0
-      - carrots_stage_1
-      - carrots_stage_2
-      - carrots_stage_3
-  carved_pumpkin:
-    states:
-      'off':
+          sides: log_birch
+          top: log_birch_top
+    birch_planks:
+      texture: planks_birch
+    birch_sapling:
+      texture: sapling_birch
+    birch_slab:
+      texture: planks_birch
+    black_stained_glass:
+      translucent: true
+      texture: glass_black
+    black_wool:
+      texture: wool_colored_black
+    blue_concrete:
+      texture: hardened_clay_stained_blue
+    blue_orchid:
+      texture: flower_blue_orchid
+    blue_stained_glass:
+      translucent: true
+      texture: glass_blue
+    blue_terracotta:
+      texture: hardened_clay_stained_blue
+    blue_wool:
+      texture: wool_colored_blue
+    bone_block:
+      texture:
         sides:
-          front: pumpkin_face_off
-          side: pumpkin_side
-          top: pumpkin_top
-      'on':
+          side: bone_block_side
+          top: bone_block_top
+    brewing_stand:
+      texture:
+        parts:
+          base: brewing_stand_base
+          stand: brewing_stand
+    brown_concrete:
+      texture: hardened_clay_stained_brown
+    brown_mushroom:
+      texture: mushroom_brown
+    brown_stained_glass:
+      translucent: true
+      texture: glass_brown
+    brown_terracotta:
+      texture: hardened_clay_stained_brown
+    brown_wool:
+      texture: wool_colored_brown
+    cactus:
+      texture:
         sides:
-          front: pumpkin_face_on
-          side: pumpkin_side
-          top: pumpkin_top
-  cauldron:
-    sides:
-      bottom: cauldron_bottom
-      inner: cauldron_inner
-      side: cauldron_side
-      top: cauldron_top
-  chiseled_quartz_block:
-    sides:
-      sides: quartz_block_chiseled
-      top: quartz_block_chiseled_top
-  chiseled_red_sandstone:
-    sides:
-      bottom: red_sandstone_bottom
-      sides: red_sandstone_carved
-      top: red_sandstone_top
-  chiseled_red_sandstone_slab:
-    sides:
-      bottom: red_sandstone_bottom
-      sides: red_sandstone_carved
-      top: red_sandstone_top
-  chiseled_standstone:
-    sides:
-      bottom: sandstone_bottom
-      sides: sandstone_carved
-      top: sandstone_top
-  chiseled_standstone_slab:
-    sides:
-      bottom: sandstone_bottom
-      sides: sandstone_carved
-      top: sandstone_top
-  chiseled_stone_bricks: stonebrick_carved
-  chiseled_stone_bricks_slab: stonebrick_carved
-  chorus_flower:
-    state:
-      dead: chorus_flower_dead
-      default: chorus_flower
-  chorus_plant: chorus_plant
-  clay: clay
-  coal_block: coal_block
-  coal_ore: coal_ore
-  coarse_dirt: coarse_dirt
-  cobblestone: cobblestone
-  cobweb: web
-  cocoa:
-    stages:
-      - cocoa_stage_0
-      - cocoa_stage_1
-      - cocoa_stage_2
-  comparator:
-    states:
-      'off': comparator_off
-      'on': comparator_on
-  cracked_stone_bricks: stonebrick_cracked
-  cracked_stone_bricks_slab: stonebrick_cracked
-  crafting_table:
-    sides:
-      front: crafting_table_front
-      side: crafting_table_side
-      top: crafting_table_top
-  cyan_concrete: hardened_clay_stained_cyan
-  cyan_stained_glass:
-    translucent: true
-    texture: glass_cyan
-  cyan_terracotta: hardened_clay_stained_cyan
-  cyan_wool: wool_colored_cyan
-  dandelion: flower_dandelion
-  dark_oak_door:
-    parts:
-      lower: door_big_oak_lower
-      upper: door_big_oak_upper
-  dark_oak_fence: planks_big_oak
-  dark_oak_fence_gate: planks_big_oak
-  dark_oak_leaves: leaves_big_oak
-  dark_oak_log:
-    sides:
-      sides: log_big_oak
-      top: log_big_oak_top
-  dark_oak_planks: planks_big_oak
-  dark_oak_slab: planks_big_oak
-  dark_prismarine: prismarine_dark
-  daylight_detector:
-    states:
-      default:
-        side: daylight_detector_side
-        top: daylight_detector_inverted_top
-      inverted:
-        side: daylight_detector_side
-        top: daylight_detector_top
-  dead_bush: deadbush
-  detector_rail:
-    states:
-      default: rail_activator
-      powered: rail_activator_powered
-  diorite: stone_diorite
-  diorite_slab: stone_diorite
-  dispenser:
-    states:
-      horizontal:
+          bottom: cactus_bottom
+          side: cactus_side
+          top: cactus_top
+    cake:
+      texture:
         sides:
-          front: dispenser_front_horizontal
-      vertical:
+          bottom: cake_bottom
+          inner: cake_inner
+          side: cake_side
+          top: cake_top
+    carrots:
+      texture:
+        stage:
+          - carrots_stage_0
+          - carrots_stage_1
+          - carrots_stage_2
+          - carrots_stage_3
+    carved_pumpkin:
+      texture:
+        states:
+          off:
+            sides:
+              front: pumpkin_face_off
+              side: pumpkin_side
+              top: pumpkin_top
+          on:
+            sides:
+              front: pumpkin_face_on
+              side: pumpkin_side
+              top: pumpkin_top
+    cauldron:
+      texture:
         sides:
-          front: dispenser_front_vertical
-  dropper:
-    states:
-      horizontal:
+          bottom: cauldron_bottom
+          inner: cauldron_inner
+          side: cauldron_side
+          top: cauldron_top
+    chiseled_quartz_block:
+      texture:
         sides:
-          front: dropper_front_vertical
-      vertical:
+          sides: quartz_block_chiseled
+          top: quartz_block_chiseled_top
+    chiseled_red_sandstone:
+      texture:
         sides:
-          front: dropper_front_horizontal
-  enchanting_table:
-    sides:
-      bottom: enchanting_table_bottom
-      side: enchanting_table_side
-      top: enchanting_table_top
-  end_portal_frame:
-    sides:
-      side: endframe_side
-      top: endframe_top
-  end_stone_bricks: end_bricks
-  end_stone_bricks_slab: end_bricks
-  farmland:
-    stages:
-      - farmland_dry
-      - farmland_dry
-      - farmland_dry
-      - farmland_dry
-      - farmland_dry
-      - farmland_dry
-      - farmland_dry
-      - farmland_wet
-  frosted_ice:
-    states:
-      - frosted_ice_0
-      - frosted_ice_1
-      - frosted_ice_2
-      - frosted_ice_3
-  furnace:
-    states:
-      'off':
+          bottom: red_sandstone_bottom
+          sides: red_sandstone_carved
+          top: red_sandstone_top
+    chiseled_red_sandstone_slab:
+      texture:
         sides:
-          front: furnace_front_off
-          side: furnace_side
-          top: furnace_top
-      'on':
+          bottom: red_sandstone_bottom
+          sides: red_sandstone_carved
+          top: red_sandstone_top
+    chiseled_standstone:
+      texture:
         sides:
-          front: furnace_front_on
-          side: furnace_side
-          top: furnace_top
-  granite: stone_granite
-  granite_slab: stone_granite
-  grass_block:
-    states:
-      default:
+          bottom: sandstone_bottom
+          sides: sandstone_carved
+          top: sandstone_top
+    chiseled_standstone_slab:
+      texture:
         sides:
-          side: grass_side
-          top: grass_top
-      snowy:
+          bottom: sandstone_bottom
+          sides: sandstone_carved
+          top: sandstone_top
+    chiseled_stone_bricks:
+      texture: stonebrick_carved
+    chiseled_stone_bricks_slab:
+      texture: stonebrick_carved
+    chorus_flower:
+      texture:
+        state:
+          dead: chorus_flower_dead
+          default: chorus_flower
+    chorus_plant:
+      texture: chorus_plant
+    clay:
+      texture: clay
+    coal_block:
+      texture: coal_block
+    coal_ore:
+      texture: coal_ore
+    coarse_dirt:
+      texture: coarse_dirt
+    cobblestone:
+      texture: cobblestone
+    cobweb:
+      texture: web
+    cocoa:
+      texture:
+        stages:
+          - cocoa_stage_0
+          - cocoa_stage_1
+          - cocoa_stage_2
+    comparator:
+      texture:
+        states:
+          off: comparator_off
+          on: comparator_on
+    cracked_stone_bricks:
+      texture: stonebrick_cracked
+    cracked_stone_bricks_slab:
+      texture: stonebrick_cracked
+    crafting_table:
+      texture:
         sides:
-          side: grass_side_snowed
-          top: grass_top
-  grass_path:
-    sides:
-      side: grass_path_side
-      top: grass_path_top
-  gray_concrete: hardened_clay_stained_gray
-  gray_stained_glass:
-    translucent: true
-    texture: glass_gray
-  gray_terracotta: hardened_clay_stained_gray
-  gray_wool: wool_colored_gray
-  green_concrete: hardened_clay_stained_green
-  green_stained_glass:
-    translucent: true
-    texture: glass_green
-  green_terracotta: hardened_clay_stained_green
-  green_wool: wool_colored_green
-  hay_block:
-    sides:
-      side: hay_block_side
-      top: hay_block_top
-  hopper:
-    sides:
-      inside: hopper_inside
-      outside: hopper_outside
-      top: hopper_top
-  houstonia: flower_houstonia
-  iron_door:
-    parts:
-      lower: door_iron_lower
-      upper: door_iron_upper
-  jukebox:
-    sides:
-      side: jukebox_side
-      top: jukebox_top
-  jungle:
-    parts:
-      lower: door_jungle_lower
-      upper: door_jungle_upper
-  jungle_fence: planks_jungle
-  jungle_fence_gate: planks_jungle
-  jungle_leaves: leaves_jungle
-  jungle_log:
-    sides:
-      sides: log_jungle
-      top: log_jungle_top
-  jungle_planks: planks_jungle
-  jungle_sapling: sapling_jungle
-  jungle_slab: planks_jungle
-  lava:
-    state:
-      still: lava_still
-  light_blue_concrete: hardened_clay_stained_light_blue
-  light_blue_stained_glass:
-    translucent: true
-    texture: glass_light_blue
-  light_blue_terracotta: hardened_clay_stained_light_blue
-  light_blue_wool: wool_colored_light_blue
-  lime_concrete: hardened_clay_stained_lime
-  lime_stained_glass:
-    translucent: true
-    texture: glass_lime
-  lime_terracotta: hardened_clay_stained_lime
-  lime_wool: wool_colored_lime
-  magenta_concrete: hardened_clay_stained_magenta
-  magenta_stained_glass:
-    translucent: true
-    texture: glass_magenta
-  magenta_terracotta: hardened_clay_stained_magenta
-  magenta_wool: wool_colored_magenta
-  magma_block: magma
-  melon:
-    sides:
-      side: melon_side
-      top: melon_top
-  mossy_cobblestone: cobblestone_mossy
-  mossy_stone_bricks: stonebrick_mossy
-  mossy_stone_bricks_slab: stonebrick_mossy
-  mycelium:
-    sides:
-      side: mycelium_side
-      top: mycelium_top
-  nether_bricks: nether_brick
-  nether_bricks_slab: nether_brick
-  nether_portal: portal
-  nether_quartz_ore: quartz_ore
-  nether_wart:
-    stages:
-      - nether_wart_stage_0
-      - nether_wart_stage_1
-      - nether_wart_stage_2
-  note_block: noteblock
-  oak_door:
-    parts:
-      lower: door_wood_lower
-      upper: door_wood_upper
-  oak_fence: planks_oak
-  oak_fence_gate: planks_oak
-  oak_leaves: leaves_oak
-  oak_log:
-    sides:
-      sides: log_oak
-      top: log_oak_top
-  oak_planks: planks_oak
-  oak_sapling: sapling_oak
-  oak_slab: planks_oak
-  orange_concrete: hardened_clay_stained_orange
-  orange_stained_glass:
-    translucent: true
-    texture: glass_orange
-  orange_terracotta: hardened_clay_stained_orange
-  orange_tulip: flower_tulip_orange
-  orange_wool: wool_colored_orange
-  oxeye_daisy: flower_oxeye_daisy
-  paeonia: flower_paeonia
-  pink_concrete: hardened_clay_stained_pink
-  pink_stained_glass:
-    translucent: true
-    texture: glass_pink
-  pink_terracotta: hardened_clay_stained_pink
-  pink_tulip: flower_tulip_pink
-  pink_wool: wool_colored_pink
-  podzol:
-    sides:
-      side: dirt_podzol_side
-      top: dirt_podzol_top
-  polished_andesite: stone_andesite_smooth
-  polished_andesite_slab: stone_andesite_smooth
-  polished_diorite: stone_diorite_smooth
-  polished_diorite_slab: stone_diorite_smooth
-  polished_granite: stone_granite_smooth
-  polished_granite_slab: stone_granite_smooth
-  potatoes:
-    translucent: true
-    stages:
-      - potatoes_stage_0
-      - potatoes_stage_1
-      - potatoes_stage_2
-      - potatoes_stage_3
-  powered_rail:
-    translucent: true
-    states:
-      default: rail_golden
-      powered: rail_golden_powered
-  prismarine: prismarine_rough
-  pruple_wool: wool_colored_purple
-  purple_concrete: hardened_clay_stained_purple
-  purple_stained_glass:
-    translucent: true
-    texture: glass_purple
-  purple_terracotta: hardened_clay_stained_purple
-  purpur_pillar:
-    sides:
-      side: purpur_pillar
-      top: purpur_pillar_top
-  quartz_block:
-    sides:
-      bottom: quartz_block_bottom
-      side: quartz_block_side
-      top: quartz_block_top
-  quartz_pillar:
-    sides:
-      side: quartz_block_lines
-      top: quartz_block_lines_top
-  rail:
-    states:
-      default: rail_normal
-      turned: rail_normal_turned
-  red_concrete: hardened_clay_stained_red
-  red_mushroom:
-    translucent: true
-    texture: mushroom_red
-  red_nether_bricks: red_nether_brick
-  red_nether_bricks_slab: red_nether_brick
-  red_sandstone:
-    sides:
-      bottom: red_sandstone_bottom
-      sides: red_sandstone_normal
-      top: red_sandstone_top
-  red_sandstone_slab:
-    sides:
-      bottom: red_sandstone_bottom
-      sides: red_sandstone_normal
-      top: red_sandstone_top
-  red_stained_glass:
-    translucent: true
-    texture: glass_red
-  red_terracotta: hardened_clay_stained_red
-  red_tulip: flower_tulip_red
-  red_wool: wool_colored_red
-  redstone_lamp:
-    states:
-      default: redstone_lamp_off
-      'on': redstone_lamp_on
-  redstone_torch:
-    states:
-      default: redstone_torch_off
-      'on': redstone_torch_on
-  repeater:
-    states:
-      'off': repeater_off
-      'on': repeater_on
-  rose_bush: rose
-  sandstone:
-    sides:
-      bottom: sandstone_bottom
-      sides: sandstone_normal
-      top: sandstone_top
-  sandstone_slab:
-    sides:
-      bottom: sandstone_bottom
-      sides: sandstone_normal
-      top: sandstone_top
-  sea_lantern: sea_lantern
-  silver_concrete: hardened_clay_stained_silver
-  silver_stained_glass: 
-    translucent: true
-    texture: glass_silver
-  silver_terracotta: hardened_clay_stained_silver
-  silver_wool: wool_colored_silver
-  slime_block: slime
-  smooth_red_sandstone:
-    sides:
-      bottom: red_sandstone_bottom
-      sides: red_sandstone_smooth
-      top: red_sandstone_top
-  smooth_red_sandstone_slab:
-    sides:
-      bottom: red_sandstone_bottom
-      sides: red_sandstone_smooth
-      top: red_sandstone_top
-  spawner: mob_spawner
-  spruce_door:
-    parts:
-      lower: door_spruce_lower
-      upper: door_spruce_upper
-  spruce_fence: planks_spruce
-  spruce_fence_gate: planks_spruce
-  spruce_leaves: leaves_spruce
-  spruce_log:
-    sides:
-      sides: log_spruce
-      top: log_spruce_top
-  spruce_planks: planks_spruce
-  spruce_sapling: sapling_spruce
-  spruce_slab: planks_spruce
-  stone_bricks: stonebrick
-  stone_bricks_slab: stonebrick
-  stone_slab:
-    sides:
-      side: stone_slab_side
-      top: stone_slab_top
-  structure_block:
-    states:
-      corner: structure_block_corner
-      data: structure_block_data
-      default: structure_block
-      load: structure_block_load
-      save: structure_block_save
-  tallgrass: tallgrass
-  terracotta: hardened_clay
-  tnt:
-    sides:
-      bottom: tnt_bottom
-      side: tnt_side
-      top: tnt_top
-  torch:
-    translucent: true
-    states:
-      default: torch_off
-      on: torch_on
-  trapdoor:
-    translucent: true
-    texture: trapdoor
-#  tripwire:
-#    translucent: true
-#    texture: trip_wire
-#  tripwire_hook:
-#    translucent: true
-#    texture: trip_wire_source
-  vine:
-    translucent: true
-    texture: vine
-  water:
-    state:
-      still: water_still
-  waterlily: waterlily
-  wet_sponge: sponge_wet
-  wheat:
-    translucent: true
-    stages:
-      - wheat_stage_0
-      - wheat_stage_1
-      - wheat_stage_2
-      - wheat_stage_3
-      - wheat_stage_4
-      - wheat_stage_5
-      - wheat_stage_6
-      - wheat_stage_7
-  white_concrete: hardened_clay_stained_white
-  white_stained_glass:
-    translucent: true
-    texture: glass_white
-  white_terracotta: hardened_clay_stained_white
-  white_tulip:
-    translucent: true
-    texture: flower_tulip_white
-  white_wool: wool_colored_white
-  yellow_concrete: hardened_clay_stained_yellow
-  yellow_stained_glass:
-    translucent: true
-    texture: glass_yellow
-  yellow_terracotta: hardened_clay_stained_yellow
-  yellow_wool: wool_colored_yellow
+          front: crafting_table_front
+          side: crafting_table_side
+          top: crafting_table_top
+    cyan_concrete:
+      texture: hardened_clay_stained_cyan
+    cyan_stained_glass:
+      translucent: true
+      texture: glass_cyan
+    cyan_terracotta:
+      texture: hardened_clay_stained_cyan
+    cyan_wool:
+      texture: wool_colored_cyan
+    dandeli  on:
+      texture: flower_dandelion
+    dark_oak_door:
+      texture:
+        parts:
+          lower: door_big_oak_lower
+          upper: door_big_oak_upper
+    dark_oak_fence:
+      texture: planks_big_oak
+    dark_oak_fence_gate:
+      texture: planks_big_oak
+    dark_oak_leaves:
+      texture: leaves_big_oak
+    dark_oak_log:
+      texture:
+        sides:
+          sides: log_big_oak
+          top: log_big_oak_top
+    dark_oak_planks:
+      texture: planks_big_oak
+    dark_oak_slab:
+      texture: planks_big_oak
+    dark_prismarine:
+      texture: prismarine_dark
+    daylight_detector:
+      texture:
+        states:
+          default:
+            side: daylight_detector_side
+            top: daylight_detector_inverted_top
+          inverted:
+            side: daylight_detector_side
+            top: daylight_detector_top
+    dead_bush:
+      texture: deadbush
+    detector_rail:
+      texture:
+        states:
+          default: rail_activator
+          powered: rail_activator_powered
+    diorite:
+      texture: stone_diorite
+    diorite_slab:
+      texture: stone_diorite
+    dispenser:
+      texture:
+        states:
+          horizontal:
+            sides:
+              front: dispenser_front_horizontal
+          vertical:
+            sides:
+              front: dispenser_front_vertical
+    dropper:
+      texture:
+        states:
+          horizontal:
+            sides:
+              front: dropper_front_vertical
+          vertical:
+            sides:
+              front: dropper_front_horizontal
+    enchanting_table:
+      texture:
+        sides:
+          bottom: enchanting_table_bottom
+          side: enchanting_table_side
+          top: enchanting_table_top
+    end_portal_frame:
+      texture:
+        sides:
+          side: endframe_side
+          top: endframe_top
+    end_stone_bricks:
+      texture: end_bricks
+    end_stone_bricks_slab:
+      texture: end_bricks
+    farmland:
+      texture:
+        stages:
+          - farmland_dry
+          - farmland_dry
+          - farmland_dry
+          - farmland_dry
+          - farmland_dry
+          - farmland_dry
+          - farmland_dry
+          - farmland_wet
+    frosted_ice:
+      texture:
+        states:
+          - frosted_ice_0
+          - frosted_ice_1
+          - frosted_ice_2
+          - frosted_ice_3
+    furnace:
+      texture:
+        states:
+          off:
+            sides:
+              front: furnace_front_off
+              side: furnace_side
+              top: furnace_top
+          on:
+            sides:
+              front: furnace_front_on
+              side: furnace_side
+              top: furnace_top
+    granite:
+      texture: stone_granite
+    granite_slab:
+      texture: stone_granite
+    grass_block:
+      texture:
+        states:
+          default:
+            sides:
+              side: grass_side
+              top: grass_top
+        snowy:
+          sides:
+            side: grass_side_snowed
+            top: grass_top
+    grass_path:
+      texture:
+        sides:
+          side: grass_path_side
+          top: grass_path_top
+    gray_concrete:
+      texture: hardened_clay_stained_gray
+    gray_stained_glass:
+      translucent: true
+      texture: glass_gray
+    gray_terracotta:
+      texture: hardened_clay_stained_gray
+    gray_wool:
+      texture: wool_colored_gray
+    green_concrete:
+      texture: hardened_clay_stained_green
+    green_stained_glass:
+      translucent: true
+      texture: glass_green
+    green_terracotta:
+      texture: hardened_clay_stained_green
+    green_wool:
+      texture: wool_colored_green
+    hay_block:
+      texture:
+        sides:
+          side: hay_block_side
+          top: hay_block_top
+    hopper:
+      texture:
+        sides:
+          inside: hopper_inside
+          outside: hopper_outside
+          top: hopper_top
+    houstonia:
+      texture: flower_houstonia
+    iron_door:
+      texture:
+        parts:
+          lower: door_iron_lower
+          upper: door_iron_upper
+    jukebox:
+      texture:
+        sides:
+          side: jukebox_side
+          top: jukebox_top
+    jungle:
+      texture:
+        parts:
+          lower: door_jungle_lower
+          upper: door_jungle_upper
+    jungle_fence:
+      texture: planks_jungle
+    jungle_fence_gate:
+      texture: planks_jungle
+    jungle_leaves:
+      texture: leaves_jungle
+    jungle_log:
+      texture:
+        sides:
+          sides: log_jungle
+          top: log_jungle_top
+    jungle_planks:
+      texture: planks_jungle
+    jungle_sapling:
+      texture: sapling_jungle
+    jungle_slab:
+      texture: planks_jungle
+    lava:
+      texture:
+        state:
+          still: lava_still
+    light_blue_concrete:
+      texture: hardened_clay_stained_light_blue
+    light_blue_stained_glass:
+      translucent: true
+      texture: glass_light_blue
+    light_blue_terracotta:
+      texture: hardened_clay_stained_light_blue
+    light_blue_wool:
+      texture: wool_colored_light_blue
+    lime_concrete:
+      texture: hardened_clay_stained_lime
+    lime_stained_glass:
+      translucent: true
+      texture: glass_lime
+    lime_terracotta:
+      texture: hardened_clay_stained_lime
+    lime_wool:
+      texture: wool_colored_lime
+    magenta_concrete:
+      texture: hardened_clay_stained_magenta
+    magenta_stained_glass:
+      translucent: true
+      texture: glass_magenta
+    magenta_terracotta:
+      texture: hardened_clay_stained_magenta
+    magenta_wool:
+      texture: wool_colored_magenta
+    magma_block:
+      texture: magma
+    melon:
+      texture:
+        sides:
+          side: melon_side
+          top: melon_top
+    mossy_cobblestone:
+      texture: cobblestone_mossy
+    mossy_stone_bricks:
+      texture: stonebrick_mossy
+    mossy_stone_bricks_slab:
+      texture: stonebrick_mossy
+    mycelium:
+      texture:
+        sides:
+          side: mycelium_side
+          top: mycelium_top
+    nether_bricks:
+      texture: nether_brick
+    nether_bricks_slab:
+      texture: nether_brick
+    nether_portal:
+      texture: portal
+    nether_quartz_ore:
+      texture: quartz_ore
+    nether_wart:
+      texture:
+        stages:
+          - nether_wart_stage_0
+          - nether_wart_stage_1
+          - nether_wart_stage_2
+    note_block:
+      texture: noteblock
+    oak_door:
+      texture:
+        parts:
+          lower: door_wood_lower
+          upper: door_wood_upper
+    oak_fence:
+      texture: planks_oak
+    oak_fence_gate:
+      texture: planks_oak
+    oak_leaves:
+      texture: leaves_oak
+    oak_log:
+      texture:
+        sides:
+          sides: log_oak
+          top: log_oak_top
+    oak_planks:
+      texture: planks_oak
+    oak_sapling:
+      texture: sapling_oak
+    oak_slab:
+      texture: planks_oak
+    orange_concrete:
+      texture: hardened_clay_stained_orange
+    orange_stained_glass:
+      translucent: true
+      texture: glass_orange
+    orange_terracotta:
+      texture: hardened_clay_stained_orange
+    orange_tulip:
+      texture: flower_tulip_orange
+    orange_wool:
+      texture: wool_colored_orange
+    oxeye_daisy:
+      texture: flower_oxeye_daisy
+    paeonia:
+      texture: flower_paeonia
+    pink_concrete:
+      texture: hardened_clay_stained_pink
+    pink_stained_glass:
+      translucent: true
+      texture: glass_pink
+    pink_terracotta:
+      texture: hardened_clay_stained_pink
+    pink_tulip:
+      texture: flower_tulip_pink
+    pink_wool:
+      texture: wool_colored_pink
+    podzol:
+      texture:
+        sides:
+          side: dirt_podzol_side
+          top: dirt_podzol_top
+    polished_andesite:
+      texture: stone_andesite_smooth
+    polished_andesite_slab:
+      texture: stone_andesite_smooth
+    polished_diorite:
+      texture: stone_diorite_smooth
+    polished_diorite_slab:
+      texture: stone_diorite_smooth
+    polished_granite:
+      texture: stone_granite_smooth
+    polished_granite_slab:
+      texture: stone_granite_smooth
+    potatoes:
+      translucent: true
+      texture:
+        stages:
+          - potatoes_stage_0
+          - potatoes_stage_1
+          - potatoes_stage_2
+          - potatoes_stage_3
+    powered_rail:
+      translucent: true
+      texture:
+        states:
+          default: rail_golden
+          powered: rail_golden_powered
+    prismarine:
+      texture: prismarine_rough
+    pruple_wool:
+      texture: wool_colored_purple
+    purple_concrete:
+      texture: hardened_clay_stained_purple
+    purple_stained_glass:
+      translucent: true
+      texture: glass_purple
+    purple_terracotta:
+      texture: hardened_clay_stained_purple
+    purpur_pillar:
+      texture:
+        sides:
+          side: purpur_pillar
+          top: purpur_pillar_top
+    quartz_block:
+      texture:
+        sides:
+          bottom: quartz_block_bottom
+          side: quartz_block_side
+          top: quartz_block_top
+    quartz_pillar:
+      texture:
+        sides:
+          side: quartz_block_lines
+          top: quartz_block_lines_top
+    rail:
+      texture:
+        states:
+          default: rail_normal
+          turned: rail_normal_turned
+    red_concrete:
+      texture: hardened_clay_stained_red
+    red_mushroom:
+      translucent: true
+      texture: mushroom_red
+    red_nether_bricks:
+      texture: red_nether_brick
+    red_nether_bricks_slab:
+      texture: red_nether_brick
+    red_sandstone:
+      texture:
+        sides:
+          bottom: red_sandstone_bottom
+          sides: red_sandstone_normal
+          top: red_sandstone_top
+    red_sandstone_slab:
+      texture:
+        sides:
+          bottom: red_sandstone_bottom
+          sides: red_sandstone_normal
+          top: red_sandstone_top
+    red_stained_glass:
+      translucent: true
+      texture: glass_red
+    red_terracotta:
+      texture: hardened_clay_stained_red
+    red_tulip:
+      texture: flower_tulip_red
+    red_wool:
+      texture: wool_colored_red
+    redstone_lamp:
+      texture:
+        states:
+          default: redstone_lamp_off
+          on: redstone_lamp_on
+    redstone_torch:
+      texture:
+        states:
+          default: redstone_torch_off
+          on: redstone_torch_on
+    repeater:
+      texture:
+        states:
+          off: repeater_off
+          on: repeater_on
+    rose_bush:
+      texture: rose
+    sandstone:
+      texture:
+        sides:
+          bottom: sandstone_bottom
+          sides: sandstone_normal
+          top: sandstone_top
+    sandstone_slab:
+      texture:
+        sides:
+          bottom: sandstone_bottom
+          sides: sandstone_normal
+          top: sandstone_top
+    sea_lantern:
+      texture: sea_lantern
+    silver_concrete:
+      texture: hardened_clay_stained_silver
+    silver_stained_glass:
+      translucent: true
+      texture: glass_silver
+    silver_terracotta:
+      texture: hardened_clay_stained_silver
+    silver_wool:
+      texture: wool_colored_silver
+    slime_block:
+      texture: slime
+    smooth_red_sandstone:
+      texture:
+        sides:
+          bottom: red_sandstone_bottom
+          sides: red_sandstone_smooth
+          top: red_sandstone_top
+    smooth_red_sandstone_slab:
+      texture:
+        sides:
+          bottom: red_sandstone_bottom
+          sides: red_sandstone_smooth
+          top: red_sandstone_top
+    spawner:
+      texture: mob_spawner
+    spruce_door:
+      texture:
+        parts:
+          lower: door_spruce_lower
+          upper: door_spruce_upper
+    spruce_fence:
+      texture: planks_spruce
+    spruce_fence_gate:
+      texture: planks_spruce
+    spruce_leaves:
+      texture: leaves_spruce
+    spruce_log:
+      texture:
+        sides:
+          sides: log_spruce
+          top: log_spruce_top
+    spruce_planks:
+      texture: planks_spruce
+    spruce_sapling:
+      texture: sapling_spruce
+    spruce_slab:
+      texture: planks_spruce
+    stone_bricks:
+      texture: stonebrick
+    stone_bricks_slab:
+      texture: stonebrick
+    stone_slab:
+      texture:
+        sides:
+          side: stone_slab_side
+          top: stone_slab_top
+    structure_block:
+      texture:
+        states:
+          corner: structure_block_corner
+          data: structure_block_data
+          default: structure_block
+          load: structure_block_load
+          save: structure_block_save
+    tallgrass:
+      texture: tallgrass
+    terracotta:
+      texture: hardened_clay
+    tnt:
+      texture:
+        sides:
+          bottom: tnt_bottom
+          side: tnt_side
+          top: tnt_top
+    torch:
+      translucent: true
+      texture:
+        states:
+          default: torch_off
+          on: torch_on
+    trapdoor:
+      translucent: true
+      texture: trapdoor
+    #  tripwire:
+    #    translucent: true
+    #    texture: trip_wire
+    #  tripwire_hook:
+    #    translucent: true
+    #    texture: trip_wire_source
+    vine:
+      translucent: true
+      texture: vine
+    water:
+      texture:
+        state:
+          still: water_still
+    waterlily:
+      texture: waterlily
+    wet_sponge:
+      texture: sponge_wet
+    wheat:
+      translucent: true
+      texture:
+        stages:
+          - wheat_stage_0
+          - wheat_stage_1
+          - wheat_stage_2
+          - wheat_stage_3
+          - wheat_stage_4
+          - wheat_stage_5
+          - wheat_stage_6
+          - wheat_stage_7
+    white_concrete:
+      texture: hardened_clay_stained_white
+    white_stained_glass:
+      translucent: true
+      texture: glass_white
+    white_terracotta:
+      texture: hardened_clay_stained_white
+    white_tulip:
+      translucent: true
+      texture: flower_tulip_white
+    white_wool:
+      texture: wool_colored_white
+    yellow_concrete:
+      texture: hardened_clay_stained_yellow
+    yellow_stained_glass:
+      translucent: true
+      texture: glass_yellow
+    yellow_terracotta:
+      texture: hardened_clay_stained_yellow
+    yellow_wool:
+      texture: wool_colored_yellow

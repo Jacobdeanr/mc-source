@@ -18,16 +18,21 @@ namespace McSource.Models.Nbt.Blocks
   /// <summary>
   /// Default solid, non-translucent minecraft block without any special attributes
   /// </summary>
-  public class DefaultBlock : TexturedBlock<SolidFace>
+  public class SolidBlock : TexturedBlock<SolidFace>
   {
-    public DefaultBlock(ISchematic parent, [NotNull] BlockInfo info, Coordinates coordinates,
+    public SolidBlock(ISchematic parent, [NotNull] BlockInfo info, Coordinates coordinates,
       [CanBeNull] BlockEntity? blockEntity = default) : base(parent, info, coordinates, blockEntity)
     {
     }
 
     protected override SolidFace GetFace(McPosition3D pos)
     {
-      return new SolidFace(this, pos, Info.ToPath());
+      if (Config?.Texture.MaterialPath == null)
+      {
+        return new SolidFace(this, pos, Info.ToPath());
+      }
+
+      return new SolidFace(this, pos, $"{Info.Namespace}/{Config?.Texture.MaterialPath}");
     }
   }
 }

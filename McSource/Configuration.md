@@ -89,7 +89,7 @@ textures:
 | block      | (Default) A solid block                                                             | yes         |
 | door       | A door-shaped block which can be opened or closed                                   | no          |
 | fence      | A fence-shaped block that can extend to solid blocks nearby                         | no          |
-| fence-gate | A fence-gate-shaped block which can be opened or closed                             | no          |
+| fencegate  | A fence-gate-shaped block which can be opened or closed                             | no          |
 | fire       | Burning fire                                                                        | no          |
 | flat       | A flat block like snow or carpet, can be stackable                                  | no          |
 | ladder     | A ladder-shaped block to climb on                                                   | no          |
@@ -128,13 +128,13 @@ sides'_, which takes precedence over _'default'_:
 texture:
   sides:
     default: "minecraft\\melon" # All sides that are not specified
-    # sides:                   # Optional
+    # sides:                    # Optional
     top: "minecraft\\melon_top" # Optional
-    # bottom:                  # Optional
-    # front:                   # Optional
-    # back:                    # Optional
-    # left:                    # Optional
-    # right:                   # Optional
+    # bottom:                   # Optional
+    # front:                    # Optional
+    # back:                     # Optional
+    # left:                     # Optional
+    # right:                    # Optional
 ```
 
 ###### Parts

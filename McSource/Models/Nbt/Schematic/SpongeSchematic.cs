@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using fNbt;
 using McSource.Logging;
 using McSource.Models.Nbt.BlockEntities;
@@ -9,7 +8,6 @@ using McSource.Models.Nbt.Blocks;
 using McSource.Models.Nbt.Blocks.Abstract;
 using McSource.Models.Nbt.Structs;
 using McSource.Models.Vmf;
-using VmfSharp;
 
 namespace McSource.Models.Nbt.Schematic
 {
@@ -63,11 +61,11 @@ namespace McSource.Models.Nbt.Schematic
 
 
     // todo cleanup
-    public static ISchematic? FromTag(NbtCompound rootTag)
+    public static ISchematic? FromTag(NbtCompound rootTag, Config.Config config)
     {
       try
       {
-        return new SpongeSchematic("").Load(rootTag);
+        return new SpongeSchematic(config).Load(rootTag);
       }
       catch (NullReferenceException e)
       {
@@ -76,7 +74,7 @@ namespace McSource.Models.Nbt.Schematic
       }
     }
 
-    public SpongeSchematic(string name) : base(name)
+    public SpongeSchematic(Config.Config config) : base(config)
     {
     }
 
@@ -86,11 +84,12 @@ namespace McSource.Models.Nbt.Schematic
       {
         new SkyboxBlock(this, new Coordinates(0, 0, -thickness), new Dimensions3D(Dimensions.DX, Dimensions.DY, thickness)), // South
         new SkyboxBlock(this, new Coordinates(0, 0, Dimensions.DZ), new Dimensions3D(Dimensions.DX, Dimensions.DY, thickness)), // North
-        
+
         new SkyboxBlock(this, new Coordinates(-thickness, 0, 0), new Dimensions3D(thickness, Dimensions.DY, Dimensions.DZ)), // West
         new SkyboxBlock(this, new Coordinates(Dimensions.DX, 0, 0), new Dimensions3D(thickness, Dimensions.DY, Dimensions.DZ)), // East
-        
+
         new SkyboxBlock(this, new Coordinates(0, Dimensions.DY, 0), new Dimensions3D(Dimensions.DX, thickness, Dimensions.DZ)), // Top
+        new SkyboxBlock(this, new Coordinates(0, -thickness, 0), new Dimensions3D(Dimensions.DX, thickness, Dimensions.DZ)), // Bottom
       };
     }
 
