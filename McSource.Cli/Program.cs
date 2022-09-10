@@ -5,7 +5,6 @@ namespace McSource.Cli
 {
   /*
    * Milestones:
-   * - todo Group similar blocks into groups (brush limit)
    * - todo more block behaviors
    */
   
