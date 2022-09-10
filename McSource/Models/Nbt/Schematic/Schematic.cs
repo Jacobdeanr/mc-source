@@ -31,65 +31,6 @@ namespace McSource.Models.Nbt.Schematic
 
     public void Add(Block block, short x, short y, short z)
     {
-      var tx = x;
-      var ty = y;
-      var tz = z;
-
-      while (tx-- > 0)
-      {
-        var prevBlock = Blocks[tx, y, z];
-        if (prevBlock == null)
-        {
-          continue;
-        }
-
-        if (prevBlock.Equals(block))
-        {
-          prevBlock!.Extend(block, McDirection3D.East);
-          Blocks[x, y, z] = null;
-          return;
-        }
-
-        break;
-      }
-
-
-      while (ty-- > 0)
-      {
-        var prevBlock = Blocks[x, ty, z];
-        if (prevBlock == null)
-        {
-          continue;
-        }
-
-        if (prevBlock.Equals(block))
-        {
-          prevBlock!.Extend(block, McDirection3D.Top);
-          Blocks[x, y, z] = null;
-          return;
-        }
-
-        break;
-      }
-
-      while (tz-- > 0)
-      {
-        var prevBlock = Blocks[x, y, tz];
-        if (prevBlock == null)
-        {
-          continue;
-        }
-
-        if (prevBlock.Equals(block))
-        {
-          prevBlock!.Extend(block, McDirection3D.South);
-          Blocks[x, y, z] = null;
-          return;
-        }
-
-        break;
-      }
-
       Blocks[x, y, z] = block;
     }
 

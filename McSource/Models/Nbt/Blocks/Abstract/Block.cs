@@ -173,22 +173,30 @@ namespace McSource.Models.Nbt.Blocks.Abstract
       return HashCode.Combine(Info, BlockEntity);
     }
 
+    public McDirection3D? Extended { get; set; } = null;
+    
     public void Extend(Block block, McDirection3D direction)
     {
+      var coords = Coordinates;
       switch (direction)
       {
-        case McDirection3D.Top: 
+        case McDirection3D.Top:
+          Extended = direction;
           Dimensions.DX += block.Dimensions.DX;
           break;
         case McDirection3D.South:
+          Extended = direction;
           Dimensions.DZ += block.Dimensions.DZ;
           break;
         case McDirection3D.East:
+          Extended = direction;
           Dimensions.DY += block.Dimensions.DY;
           break;
         default:
           throw new ArgumentOutOfRangeException($"Extending a block in {nameof(direction)} '{direction}' is currently not supported");
       }
+
+      Coordinates = coords;
     }
   }
 }

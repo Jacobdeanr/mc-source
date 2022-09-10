@@ -23,11 +23,6 @@ namespace McSource.Models.Nbt.Blocks.Abstract
 
     public override Vmf.Solid? ToModel(IVmfRoot root)
     {
-      if (BlockGroupRoot != null)
-      {
-        return null;
-      }
-      
       var neighbors = GetNeighbors();
       var solid = new Vmf.Solid(root);
 
