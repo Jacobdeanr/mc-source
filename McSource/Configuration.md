@@ -70,33 +70,43 @@ textures:
 
 ### Blocks:
 
-Blocks can be assigned a texture, a type and a `translucent` flag, determining whether the texture is see-through
+Blocks can be assigned a texture, a type and a `translucent` flag, determining whether the texture is see-through. A
+block must always be named after the minecraft block id
+
+```yml
+textures:
+  stone: "minecraft\\stone"
+  glass:
+    type: "block"
+    translucent: true
+    texture: "minecraft\\stone"
+```
 
 ###### Possible block types:
 
-| Type       | Description                                                                         |
-|------------|-------------------------------------------------------------------------------------|
-| block      | A solid block                                                                       |
-| slab       | A slab-shaped block that can be placed on the upper or lower half of an empty space |
-| stairs     | A stair-shaped block that can connect to nearby stairs                              |
-| pane       | A pane-shaped block that can extend to solid blocks nearby                          |
-| fence      | A fence-shaped block that can extend to solid blocks nearby                         |
-| fence-gate | A fence-gate-shaped block which can be opened or closed                             |
-| door       | A door-shaped block which can be opened or closed                                   |
-| trapdoor   | A trapdoor-shaped block which can be opened or closed                               |
-| plant      | A plant-shaped block                                                                |
-| ladder     | A ladder-shaped block to climb on                                                   |
-| flat       | A flat block like snow or carpet, can be stackable                                  |
-| fire       | Burning fire                                                                        |
-| torch      | A torch-shaped block                                                                |
-| sign       | A sign-shaped block, maybe containing text                                          |
-| rod        | A rod-shaped block                                                                  |
-| ignored    | Do not process                                                                      |
+| Type       | Description                                                                         | Implemented |
+|------------|-------------------------------------------------------------------------------------|-------------|
+| block      | (Default) A solid block                                                             | yes         |
+| door       | A door-shaped block which can be opened or closed                                   | no          |
+| fence      | A fence-shaped block that can extend to solid blocks nearby                         | no          |
+| fence-gate | A fence-gate-shaped block which can be opened or closed                             | no          |
+| fire       | Burning fire                                                                        | no          |
+| flat       | A flat block like snow or carpet, can be stackable                                  | no          |
+| ladder     | A ladder-shaped block to climb on                                                   | no          |
+| pane       | A pane-shaped block that can extend to solid blocks nearby                          | no          |
+| plant      | A plant-shaped block                                                                | no          |
+| rod        | A rod-shaped block                                                                  | no          |
+| sign       | A sign-shaped block, maybe containing text                                          | no          |
+| slab       | A slab-shaped block that can be placed on the upper or lower half of an empty space | no          |
+| stairs     | A stair-shaped block that can connect to nearby stairs                              | no          |
+| torch      | A torch-shaped block                                                                | no          |
+| trapdoor   | A trapdoor-shaped block which can be opened or closed                               | no          |
+| ignored    | Do not process                                                                      | no          |
 
 ### Texture
 
 A **Texture** defines material paths for different block materials for each side, optionally depending on different
-block states, stages:
+block states and stages:
 
 #### Possible values:
 
@@ -127,33 +137,53 @@ texture:
     # right:                   # Optional
 ```
 
-###### Stages
+###### Parts
 
-Defines the material to use for each block stage by either using a **String** or a **Sides** value.
+Defines materials for a multi-part block (for example doors or beds) by either using a **String** or a **Sides** value.
 
 ```yml
 texture:
-stages:
-  - "minecraft\\wheat_stage_0"
-  - "minecraft\\wheat_stage_1"
-  - "minecraft\\wheat_stage_2"
-  - sides:
-      default: "minecraft\\wheat_stage_3"
+  parts:
+    lower: door_acacia_lower
+    upper:
+      sides:
+        default: door_acacia_upper
+```
+
+###### Stages
+
+Defines the material to use for each block stage by either using a **String**, a **Parts** or a **Sides** value.
+
+```yml
+texture:
+  stages:
+    - "minecraft\\wheat_stage_0"
+    - "minecraft\\wheat_stage_1"
+    - "minecraft\\wheat_stage_2"
+    - sides:
+        default: "minecraft\\wheat_stage_3"
+#   - parts:
+#       lower: "minecraft\\lower"
+#       upper: "minecraft\\upper"
 ```
 
 ###### States
 
-Defines the texture to use for each block state by either using a **String**, a **Sides** or a **Stages** value.
+Defines the texture to use for each block state by either using a **String**, a **Sides**, a **Parts** or a **Stages**
+value.
 
 ```yml
 texture:
-states:
-  on: "minecraft\\torch_on"
-  off:
-    sides:
-      default: "minecraft\\torch_off"
-    stages:
-      - "minecraft\\a"
-      - "minecraft\\b"
-      - "minecraft\\c"
+  states:
+    on: "minecraft\\torch_on"
+    off:
+      sides:
+        default: "minecraft\\torch_off"
+#     stages:
+#       - "minecraft\\a"
+#       - "minecraft\\b"
+#       - "minecraft\\c"
+#     parts:
+#       lower: "minecraft\\lower"
+#       upper: "minecraft\\upper"
 ```
