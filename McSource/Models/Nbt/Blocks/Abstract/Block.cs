@@ -105,9 +105,6 @@ namespace McSource.Models.Nbt.Blocks.Abstract
         case BlockType.Block:
           // Use fallback method return
           break;
-        default:
-          Log.Error($"Invalid {nameof(BlockType)} '{config?.Type}'. Using {nameof(SolidBlock)} instead");
-          break;
       }
 
       return new SolidBlock(parent, blockInfo, coordinates, blockEntity);
