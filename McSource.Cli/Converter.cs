@@ -12,8 +12,6 @@ namespace McSource.Cli
 {
   /* Milestones:
    * todo: create skybox
-   * todo: parse block properties
-   * todo: parse block entity data
    * todo: custom block behaviors
   */
   
