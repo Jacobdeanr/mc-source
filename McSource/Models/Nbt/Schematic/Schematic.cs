@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using McSource.Models.Nbt.Blocks.Abstract;
+using McSource.Models.Nbt.Enums;
 using McSource.Models.Vmf;
 
 namespace McSource.Models.Nbt.Schematic
@@ -7,17 +8,17 @@ namespace McSource.Models.Nbt.Schematic
   public abstract class Schematic<T> : ISchematic
   {
     public Config.Config Config { get; set; }
-    
+
     public Schematic(Config.Config config)
     {
       Config = config;
     }
-    
+
     public Coordinates Offset { get; protected set; } = new Coordinates(0, 0, 0);
 
     public Dimensions3D Dimensions { get; protected set; } = new Dimensions3D();
 
-    public Block[,,] Blocks { get; protected set; }
+    public Block?[,,] Blocks { get; protected set; }
 
     public abstract Map ToModel();
 
@@ -30,6 +31,65 @@ namespace McSource.Models.Nbt.Schematic
 
     public void Add(Block block, short x, short y, short z)
     {
+      var tx = x;
+      var ty = y;
+      var tz = z;
+
+      while (tx-- > 0)
+      {
+        var prevBlock = Blocks[tx, y, z];
+        if (prevBlock == null)
+        {
+          continue;
+        }
+
+        if (prevBlock.Equals(block))
+        {
+          prevBlock!.Extend(block, McDirection3D.East);
+          Blocks[x, y, z] = null;
+          return;
+        }
+
+        break;
+      }
+
+
+      while (ty-- > 0)
+      {
+        var prevBlock = Blocks[x, ty, z];
+        if (prevBlock == null)
+        {
+          continue;
+        }
+
+        if (prevBlock.Equals(block))
+        {
+          prevBlock!.Extend(block, McDirection3D.Top);
+          Blocks[x, y, z] = null;
+          return;
+        }
+
+        break;
+      }
+
+      while (tz-- > 0)
+      {
+        var prevBlock = Blocks[x, y, tz];
+        if (prevBlock == null)
+        {
+          continue;
+        }
+
+        if (prevBlock.Equals(block))
+        {
+          prevBlock!.Extend(block, McDirection3D.South);
+          Blocks[x, y, z] = null;
+          return;
+        }
+
+        break;
+      }
+
       Blocks[x, y, z] = block;
     }
 

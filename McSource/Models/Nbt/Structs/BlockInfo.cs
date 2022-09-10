@@ -7,7 +7,7 @@ using McSource.Models.Nbt.Properties;
 
 namespace McSource.Models.Nbt.Structs
 {
-  public class BlockInfo
+  public class BlockInfo : IEquatable<BlockInfo>
   {
     public string Id { get; set; } = string.Empty;
     public string Namespace { get; set; } = "minecraft";
@@ -55,5 +55,45 @@ namespace McSource.Models.Nbt.Structs
 
     public string ToPath() => $"{Namespace}/{Id}";
     public override string ToString() => $"{Namespace}:{Id} [{Properties?.Count ?? 0} Props]";
+
+    public bool Equals(BlockInfo? other)
+    {
+      if (ReferenceEquals(null, other))
+      {
+        return false;
+      }
+
+      if (ReferenceEquals(this, other))
+      {
+        return true;
+      }
+
+      return Id == other.Id && Namespace == other.Namespace && Properties.Equals(other.Properties);
+    }
+
+    public override bool Equals(object? obj)
+    {
+      if (ReferenceEquals(null, obj))
+      {
+        return false;
+      }
+
+      if (ReferenceEquals(this, obj))
+      {
+        return true;
+      }
+
+      if (obj.GetType() != this.GetType())
+      {
+        return false;
+      }
+
+      return Equals((BlockInfo) obj);
+    }
+
+    public override int GetHashCode()
+    {
+      return HashCode.Combine(Id, Namespace, Properties);
+    }
   }
 }

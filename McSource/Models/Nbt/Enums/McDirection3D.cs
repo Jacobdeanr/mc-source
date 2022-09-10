@@ -1,6 +1,6 @@
 ﻿namespace McSource.Models.Nbt.Enums
 {
-  public enum McPosition3D
+  public enum McDirection3D
   {
     East, // X+
     West, // X-

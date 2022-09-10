@@ -11,16 +11,23 @@ using VmfSharp;
 
 namespace McSource.Models.Nbt.Blocks.Abstract
 {
-  public abstract class TexturedBlock<TFace> : Block where TFace : Face.Face
+  public abstract class TexturedBlock<TFace> : Block
+    where TFace : Face.Face
   {
-    protected TexturedBlock([NotNull] ISchematic parent, BlockInfo info, Coordinates coordinates, [CanBeNull] BlockEntity? blockEntity = default) : base(parent, info, coordinates, blockEntity)
+    protected TexturedBlock([NotNull] ISchematic parent, BlockInfo info, Coordinates coordinates,
+      [CanBeNull] BlockEntity? blockEntity = default) : base(parent, info, coordinates, blockEntity)
     {
     }
-    
-    protected abstract TFace GetFace(McPosition3D pos);
+
+    protected abstract TFace GetFace(McDirection3D pos);
 
     public override Vmf.Solid? ToModel(IVmfRoot root)
     {
+      if (BlockGroupRoot != null)
+      {
+        return null;
+      }
+      
       var neighbors = GetNeighbors();
       var solid = new Vmf.Solid(root);
 
@@ -55,6 +62,5 @@ namespace McSource.Models.Nbt.Blocks.Abstract
       };
       return solid;
     }
-    
   }
 }

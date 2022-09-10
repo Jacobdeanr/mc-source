@@ -4,7 +4,7 @@ using McSource.Logging;
 
 namespace McSource.Models.Nbt.BlockEntities
 {
-  public class BlockEntity
+  public class BlockEntity : IEquatable<BlockEntity>
   {
     public string Id { get; set; }
     public Coordinates Coordinates { get; set; }
@@ -48,6 +48,46 @@ namespace McSource.Models.Nbt.BlockEntities
         Log.Error($"Could not parse {nameof(BlockEntities)} from {nameof(NbtCompound)} tag", e);
         throw;
       }
+    }
+
+    public bool Equals(BlockEntity? other)
+    {
+      if (ReferenceEquals(null, other))
+      {
+        return false;
+      }
+
+      if (ReferenceEquals(this, other))
+      {
+        return true;
+      }
+
+      return Id == other.Id && Coordinates.Equals(other.Coordinates);
+    }
+
+    public override bool Equals(object? obj)
+    {
+      if (ReferenceEquals(null, obj))
+      {
+        return false;
+      }
+
+      if (ReferenceEquals(this, obj))
+      {
+        return true;
+      }
+
+      if (obj.GetType() != this.GetType())
+      {
+        return false;
+      }
+
+      return Equals((BlockEntity) obj);
+    }
+
+    public override int GetHashCode()
+    {
+      return HashCode.Combine(Id, Coordinates);
     }
   }
 }

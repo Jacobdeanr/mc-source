@@ -15,7 +15,7 @@ namespace McSource.Models.Nbt.Blocks
 {
   public class SkyboxBlock : TexturedBlock<SolidFace>
   {
-    private static readonly BlockInfo BlockInfo = new BlockInfo();
+    private static readonly BlockInfo BlockInfo = new BlockInfo("toolsskybox", "tools");
 
     public SkyboxBlock([NotNull] ISchematic parent, Coordinates coordinates, Dimensions3D dimensions) : base(parent, BlockInfo, coordinates)
     {
@@ -26,7 +26,7 @@ namespace McSource.Models.Nbt.Blocks
     public override Solid? ToModel(IVmfRoot root)
     {
       var solid = new Vmf.Solid(root);
-      solid.Sides = Enum.GetValues(typeof(McPosition3D)).Cast<McPosition3D>().Select(pos => GetFace(pos).ToModel(solid)).ToArray();
+      solid.Sides = Enum.GetValues(typeof(McDirection3D)).Cast<McDirection3D>().Select(pos => GetFace(pos).ToModel(solid)).ToArray();
       solid.Editor = new Editor(solid)
       {
         Color = new Rgb(0, 180, 0),
@@ -36,9 +36,9 @@ namespace McSource.Models.Nbt.Blocks
       return solid;
     }
 
-    protected override SolidFace GetFace(McPosition3D pos)
+    protected override SolidFace GetFace(McDirection3D pos)
     {
-      return new SolidFace(this, pos, "tools/toolsskybox");
+      return new SolidFace(this, pos, BlockInfo.ToPath());
     }
   }
 }

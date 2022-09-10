@@ -25,7 +25,7 @@ namespace McSource.Models.Nbt.Blocks
     {
     }
 
-    protected override SolidFace GetFace(McPosition3D pos)
+    protected override SolidFace GetFace(McDirection3D pos)
     {
       if (Config?.Texture.MaterialPath == null)
       {

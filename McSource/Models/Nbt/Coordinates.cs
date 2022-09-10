@@ -5,20 +5,20 @@ using VmfSharp;
 
 namespace McSource.Models.Nbt
 {
-  public struct Coordinates
+  public struct Coordinates : IEquatable<Coordinates>
   {
     /// <summary>
-    /// FacePosition on the horizontal X axis (West - East) (Red)
+    /// FaceDirection on the horizontal X axis (West - East) (Red)
     /// </summary>
     public int X { get; set; }
 
     /// <summary>
-    /// FacePosition on the vertical Y axis (Bottom - Top) (Green)
+    /// FaceDirection on the vertical Y axis (Bottom - Top) (Green)
     /// </summary>
     public int Y { get; set; }
 
     /// <summary>
-    /// FacePosition on the horizontal Z axis (North - South) (Blue)
+    /// FaceDirection on the horizontal Z axis (North - South) (Blue)
     /// </summary>
     public int Z { get; set; }
 
@@ -39,7 +39,7 @@ namespace McSource.Models.Nbt
     {
       if (pos.Count != 3)
       {
-        throw new ArgumentException("Invalid FacePosition array");
+        throw new ArgumentException("Invalid FaceDirection array");
       }
 
       X = pos[0];

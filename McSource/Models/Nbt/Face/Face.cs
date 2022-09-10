@@ -10,18 +10,18 @@ namespace McSource.Models.Nbt.Face
   {
     public Block Parent { get; }
 
-    public McPosition3D FacePosition { get; set; }
+    public McDirection3D FaceDirection { get; set; }
 
     public string MaterialPath { get; set; } = "tools/toolsnodraw";
 
-    protected Face(Block parent, McPosition3D facePosition)
+    protected Face(Block parent, McDirection3D faceDirection)
     {
       Parent = parent;
-      FacePosition = facePosition;
+      FaceDirection = faceDirection;
     }
 
-    protected Face(Block parent, McPosition3D facePosition, string materialPath)
-      : this(parent, facePosition)
+    protected Face(Block parent, McDirection3D faceDirection, string materialPath)
+      : this(parent, faceDirection)
     {
       MaterialPath = materialPath;
     }

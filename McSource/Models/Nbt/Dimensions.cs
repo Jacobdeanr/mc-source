@@ -1,6 +1,8 @@
-﻿namespace McSource.Models.Nbt
+﻿using System;
+
+namespace McSource.Models.Nbt
 {
-  public class Dimensions3D : Dimensions2D
+  public class Dimensions3D : Dimensions2D, IEquatable<Dimensions3D>
   {
     public short DY { get; set; }
 
@@ -56,6 +58,46 @@
     public bool IsInBounds(short x, short y, short z)
     {
       return x >= 0 && y >= 0 && z >= 0 && x < DX && y < DY && z < DZ;
+    }
+
+    public bool Equals(Dimensions3D? other)
+    {
+      if (ReferenceEquals(null, other))
+      {
+        return false;
+      }
+
+      if (ReferenceEquals(this, other))
+      {
+        return true;
+      }
+
+      return base.Equals(other) && DY == other.DY;
+    }
+
+    public override bool Equals(object? obj)
+    {
+      if (ReferenceEquals(null, obj))
+      {
+        return false;
+      }
+
+      if (ReferenceEquals(this, obj))
+      {
+        return true;
+      }
+
+      if (obj.GetType() != this.GetType())
+      {
+        return false;
+      }
+
+      return Equals((Dimensions3D) obj);
+    }
+
+    public override int GetHashCode()
+    {
+      return HashCode.Combine(base.GetHashCode(), DY);
     }
   }
 }

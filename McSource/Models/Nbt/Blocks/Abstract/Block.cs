@@ -13,8 +13,10 @@ using VmfSharp;
 
 namespace McSource.Models.Nbt.Blocks.Abstract
 {
-  public abstract class Block : IVmfModelConvertible<Vmf.Solid>
+  public abstract class Block : IVmfModelConvertible<Vmf.Solid>, IEquatable<Block>
   {
+    public Block? BlockGroupRoot { get; set; }
+
     protected Config.Block? Config { get; }
 
     /// <summary>
@@ -111,17 +113,17 @@ namespace McSource.Models.Nbt.Blocks.Abstract
       return new SolidBlock(parent, blockInfo, coordinates, blockEntity);
     }
 
-    public IDictionary<McPosition3D, Block?> GetNeighbors() =>
-      new Dictionary<McPosition3D, Block?>(6)
+    public IDictionary<McDirection3D, Block?> GetNeighbors() =>
+      new Dictionary<McDirection3D, Block?>(6)
       {
-        [McPosition3D.East] = Parent.GetOrDefault(Coordinates.Clone().MoveX(-1)),
-        [McPosition3D.West] = Parent.GetOrDefault(Coordinates.Clone().MoveX(1)),
+        [McDirection3D.East] = Parent.GetOrDefault(Coordinates.Clone().MoveX(-1)),
+        [McDirection3D.West] = Parent.GetOrDefault(Coordinates.Clone().MoveX(1)),
 
-        [McPosition3D.Bottom] = Parent.GetOrDefault(Coordinates.Clone().MoveY(-1)),
-        [McPosition3D.Top] = Parent.GetOrDefault(Coordinates.Clone().MoveY(1)),
+        [McDirection3D.Bottom] = Parent.GetOrDefault(Coordinates.Clone().MoveY(-1)),
+        [McDirection3D.Top] = Parent.GetOrDefault(Coordinates.Clone().MoveY(1)),
 
-        [McPosition3D.South] = Parent.GetOrDefault(Coordinates.Clone().MoveZ(1)),
-        [McPosition3D.North] = Parent.GetOrDefault(Coordinates.Clone().MoveZ(-1))
+        [McDirection3D.South] = Parent.GetOrDefault(Coordinates.Clone().MoveZ(1)),
+        [McDirection3D.North] = Parent.GetOrDefault(Coordinates.Clone().MoveZ(-1))
       };
 
     public abstract Solid? ToModel(IVmfRoot root);
@@ -129,6 +131,64 @@ namespace McSource.Models.Nbt.Blocks.Abstract
     public override string ToString()
     {
       return $"{Coordinates}: '{Info}'";
+    }
+
+    public bool Equals(Block? other)
+    {
+      if (ReferenceEquals(null, other))
+      {
+        return false;
+      }
+
+      if (ReferenceEquals(this, other))
+      {
+        return true;
+      }
+
+      return Info.Equals(other.Info) && Equals(BlockEntity, other.BlockEntity);
+    }
+
+    public override bool Equals(object? obj)
+    {
+      if (ReferenceEquals(null, obj))
+      {
+        return false;
+      }
+
+      if (ReferenceEquals(this, obj))
+      {
+        return true;
+      }
+
+      if (obj.GetType() != this.GetType())
+      {
+        return false;
+      }
+
+      return Equals((Block) obj);
+    }
+
+    public override int GetHashCode()
+    {
+      return HashCode.Combine(Info, BlockEntity);
+    }
+
+    public void Extend(Block block, McDirection3D direction)
+    {
+      switch (direction)
+      {
+        case McDirection3D.Top: 
+          Dimensions.DX += block.Dimensions.DX;
+          break;
+        case McDirection3D.South:
+          Dimensions.DZ += block.Dimensions.DZ;
+          break;
+        case McDirection3D.East:
+          Dimensions.DY += block.Dimensions.DY;
+          break;
+        default:
+          throw new ArgumentOutOfRangeException($"Extending a block in {nameof(direction)} '{direction}' is currently not supported");
+      }
     }
   }
 }
