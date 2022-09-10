@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using McSource.Models.Nbt.Blocks;
+using McSource.Models.Nbt.Blocks.Abstract;
+using McSource.Models.Nbt.Enums;
 using McSource.Models.Vmf;
 
 namespace McSource.Models.Nbt.Schematic
@@ -43,6 +45,16 @@ namespace McSource.Models.Nbt.Schematic
       return Blocks[x, y, z];
     }
 
+    public Block? GetOrDefault(Coordinates c)
+    {
+      return TryGet(c, out var block) ? block : default;
+    }
+
+    public Block? GetOrDefault(short x, short y, short z)
+    {
+      return TryGet(x, y, z, out var block) ? block : default;
+    }
+
     public bool TryGet(Coordinates c, out Block? block)
     {
       if (Dimensions.IsInBounds(c))
@@ -65,43 +77,6 @@ namespace McSource.Models.Nbt.Schematic
 
       block = null;
       return false;
-    }
-
-    public IDictionary<NeighborPosition, Block> GetNeighbors(Block block)
-    {
-      var neighbours = new Dictionary<NeighborPosition, Block>();
-
-      if (TryGet(block.Coordinates.Clone().MoveX(1), out var bWest) && bWest != null)
-      {
-        neighbours[NeighborPosition.West] = bWest;
-      }
-
-      if (TryGet(block.Coordinates.Clone().MoveX(-1), out var bEast) && bEast != null)
-      {
-        neighbours[NeighborPosition.East] = bEast;
-      }
-
-      if (TryGet(block.Coordinates.Clone().MoveY(1), out var bTop) && bTop != null)
-      {
-        neighbours[NeighborPosition.Top] = bTop;
-      }
-
-      if (TryGet(block.Coordinates.Clone().MoveY(-1), out var bBottom) && bBottom != null)
-      {
-        neighbours[NeighborPosition.Bottom] = bBottom;
-      }
-
-      if (TryGet(block.Coordinates.Clone().MoveZ(1), out var bSouth) && bSouth != null)
-      {
-        neighbours[NeighborPosition.South] = bSouth;
-      }
-
-      if (TryGet(block.Coordinates.Clone().MoveZ(-1), out var bNorth) && bNorth != null)
-      {
-        neighbours[NeighborPosition.North] = bNorth;
-      }
-
-      return neighbours;
     }
   }
 }

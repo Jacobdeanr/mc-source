@@ -1,7 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using McSource.Extensions;
+using McSource.Logging;
 using McSource.Models.Nbt.BlockEntities;
+using McSource.Models.Nbt.Blocks.Abstract;
+using McSource.Models.Nbt.Enums;
+using McSource.Models.Nbt.Face;
 using McSource.Models.Nbt.Schematic;
 using McSource.Models.Nbt.Structs;
 using McSource.Models.Vmf;
@@ -9,29 +15,19 @@ using VmfSharp;
 
 namespace McSource.Models.Nbt.Blocks
 {
-  public class DefaultBlock : Block
+  /// <summary>
+  /// Default solid, non-translucent minecraft block without any special attributes
+  /// </summary>
+  public class DefaultBlock : TexturedBlock<SolidFace>
   {
-    public DefaultBlock(ISchematic parent, [NotNull] BlockId blockId, Coordinates coordinates,
-      [CanBeNull] BlockEntity? blockEntity = default) : base(parent, blockId, coordinates, blockEntity)
+    public DefaultBlock(ISchematic parent, [NotNull] BlockInfo info, Coordinates coordinates,
+      [CanBeNull] BlockEntity? blockEntity = default) : base(parent, info, coordinates, blockEntity)
     {
     }
 
-    public override Vmf.Solid? ToModel(IVmfRoot root)
+    protected override SolidFace GetFace(McPosition3D pos)
     {
-      if (IsEncased)
-      {
-        return null;
-      }
-      
-      var solid = new Vmf.Solid(root);
-      solid.Sides = Texture.Faces.Select(f => f.ToModel(solid)).ToArray();
-      solid.Editor = new Editor(solid)
-      {
-        Color = new Rgb(0, 180, 0),
-        VisGroupShown = true,
-        VisGroupAutoShown = true
-      };
-      return solid;
+      return new SolidFace(this, pos, Info.ToPath());
     }
   }
 }

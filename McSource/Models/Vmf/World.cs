@@ -17,7 +17,7 @@ namespace McSource.Models.Vmf
     public int MaxPropScreenWidth { get; } = -1;
     public string SkyName { get; } = "sky_day02_09";
 
-    public ICollection<IVmfSerializable> Solids { get; set; } = Array.Empty<IVmfSerializable>();
+    public ICollection<IVmfSerializable?> Solids { get; set; } = Array.Empty<IVmfSerializable>();
 
     public override IVmf ToVmf(int indentation)
     {

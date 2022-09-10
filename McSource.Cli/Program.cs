@@ -9,13 +9,14 @@ namespace McSource.Cli
     {
       try
       {
-        // var path = @"C:\Users\Simon\Documents\Userdata\SourceCraft\axis.schem";
-        var path = @"C:\Users\Simon\Documents\Userdata\SourceCraft\ttt_kekland.schem";
-        // var path = @"C:\Users\Simon\Documents\Userdata\SourceCraft\cobble_glowstone.schem";
-        // var path = @"C:\Users\Simon\Documents\Userdata\SourceCraft\cobble_glowstone_air.schem";
+        var path = @"C:\Users\Simon\Documents\Userdata\SourceCraft\schematics\dual.schem";
+        // var path = @"C:\Users\Simon\Documents\Userdata\SourceCraft\schematics\axis.schem";
+        // var path = @"C:\Users\Simon\Documents\Userdata\SourceCraft\schematics\ttt_kekland.schem";
+        // var path = @"C:\Users\Simon\Documents\Userdata\SourceCraft\schematics\cobble_glowstone.schem";
+        // var path = @"C:\Users\Simon\Documents\Userdata\SourceCraft\schematics\cobble_glowstone_air.schem";
         
         Log.Info("Welcome to Converter. Starting up...");
-        new Converter().Convert(path, @"C:\Users\Simon\Documents\Userdata\SourceCraft\map.vmf");
+        new Converter().Convert(path, @"C:\Users\Simon\Documents\Userdata\SourceCraft\mc-source-out\map.vmf");
       }
       catch (Exception e)
       {

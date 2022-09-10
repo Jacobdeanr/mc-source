@@ -6,6 +6,7 @@ using fNbt;
 using McSource.Logging;
 using McSource.Models.Nbt.BlockEntities;
 using McSource.Models.Nbt.Blocks;
+using McSource.Models.Nbt.Blocks.Abstract;
 using McSource.Models.Nbt.Structs;
 using McSource.Models.Vmf;
 using VmfSharp;
@@ -86,11 +87,6 @@ namespace McSource.Models.Nbt.Schematic
 
       foreach (var block in Blocks)
       {
-        if (block?.ToModel(map) == null)
-        {
-          continue;
-        }
-
         map.World.Solids.Add(block.ToModel(map));
       }
 
@@ -136,11 +132,7 @@ namespace McSource.Models.Nbt.Schematic
         var coordinates = CalcBlockCoordinates(index, Dimensions);
         var blockEntity = blockEntities.FirstOrDefault(be => coordinates == be.Coordinates);
 
-        var block = Block.Create(this, BlockId.FromString(palette[value]), coordinates, blockEntity);
-        if (block != null)
-        {
-          Add(block, coordinates);
-        }
+        Add( Block.Create(this, BlockInfo.FromString(palette[value]), coordinates, blockEntity), coordinates);
 
         index++;
       }
