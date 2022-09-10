@@ -49,7 +49,7 @@ namespace McSource.Models.Nbt.Blocks.Abstract
       Info = info;
       BlockEntity = blockEntity;
       Coordinates = coordinates;
-      Dimensions = new Dimensions3D(Constants.BlockSize);
+      Dimensions = new Dimensions3D(1);
     }
 
     public static Block Create(ISchematic parent,

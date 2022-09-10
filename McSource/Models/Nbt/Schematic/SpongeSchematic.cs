@@ -80,16 +80,28 @@ namespace McSource.Models.Nbt.Schematic
     {
     }
 
+    public Block[] MakeSkyBox(short thickness = 1)
+    {
+      return new Block[]
+      {
+        new SkyboxBlock(this, new Coordinates(0, 0, -thickness), new Dimensions3D(Dimensions.DX, Dimensions.DY, thickness)), // South
+        new SkyboxBlock(this, new Coordinates(0, 0, Dimensions.DZ), new Dimensions3D(Dimensions.DX, Dimensions.DY, thickness)), // North
+        
+        new SkyboxBlock(this, new Coordinates(-thickness, 0, 0), new Dimensions3D(thickness, Dimensions.DY, Dimensions.DZ)), // West
+        new SkyboxBlock(this, new Coordinates(Dimensions.DX, 0, 0), new Dimensions3D(thickness, Dimensions.DY, Dimensions.DZ)), // East
+        
+        new SkyboxBlock(this, new Coordinates(0, Dimensions.DY, 0), new Dimensions3D(Dimensions.DX, thickness, Dimensions.DZ)), // Top
+      };
+    }
+
     public override Map ToModel()
     {
+      var solids = new List<Block?>();
+      solids.AddRange(MakeSkyBox());
+      solids.AddRange(Blocks.Cast<Block?>());
+
       var map = new Map();
-      map.World = new World(map) {Solids = new List<IVmfSerializable>()};
-
-      foreach (var block in Blocks)
-      {
-        map.World.Solids.Add(block.ToModel(map));
-      }
-
+      map.World = new World(map) {Solids = solids.Select(b => b?.ToModel(map)).ToArray()};
       return map;
     }
 
@@ -132,7 +144,7 @@ namespace McSource.Models.Nbt.Schematic
         var coordinates = CalcBlockCoordinates(index, Dimensions);
         var blockEntity = blockEntities.FirstOrDefault(be => coordinates == be.Coordinates);
 
-        Add( Block.Create(this, BlockInfo.FromString(palette[value]), coordinates, blockEntity), coordinates);
+        Add(Block.Create(this, BlockInfo.FromString(palette[value]), coordinates, blockEntity), coordinates);
 
         index++;
       }

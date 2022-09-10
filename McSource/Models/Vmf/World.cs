@@ -15,7 +15,7 @@ namespace McSource.Models.Vmf
     public string DetailMaterial { get; } = "detail/detailsprites";
     public string DetailVbsp { get; } = "detail.vbsp";
     public int MaxPropScreenWidth { get; } = -1;
-    public string SkyName { get; } = "sky_day02_09";
+    public string SkyName { get; } = "minecraft/MCLITE";
 
     public ICollection<IVmfSerializable?> Solids { get; set; } = Array.Empty<IVmfSerializable>();
 
@@ -38,7 +38,6 @@ namespace McSource.Models.Vmf
         }
 
         rootTag.Value.Add(solid.ToVmf(indentation));
-
       }
 
       return rootTag;

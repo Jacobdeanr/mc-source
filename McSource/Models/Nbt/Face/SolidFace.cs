@@ -29,10 +29,11 @@ namespace McSource.Models.Nbt.Face
         Material = MaterialPath
       };
 
-      var coords = new Coordinates(Parent.Coordinates) * 40;
-      var pX = Parent.Dimensions.DX;
-      var pY = Parent.Dimensions.DY;
-      var pZ = Parent.Dimensions.DZ;
+      var coords = new Coordinates(Parent.Coordinates) * Constants.BlockSize;
+      var dims = new Dimensions3D(Parent.Dimensions) * Constants.BlockSize;
+      var pX = dims.DX;
+      var pY = dims.DY;
+      var pZ = dims.DZ;
 
       const int translation = 0;
       const double scaling = 0.3125;

@@ -12,6 +12,34 @@
       : this(size, size, size)
     {
     }
+    
+    public Dimensions3D(Dimensions3D d) : this(d.DX, d.DY, d.DZ)
+    {
+    }
+
+    public static Dimensions3D operator +(Dimensions3D d1, Dimensions3D d2)
+    {
+      d1.DX += d2.DX;
+      d1.DY += d2.DY;
+      d1.DZ += d2.DZ;
+      return d1;
+    }
+
+    public static Dimensions3D operator *(Dimensions3D d1, Dimensions3D d2)
+    {
+      d1.DX *= d2.DX;
+      d1.DY *= d2.DY;
+      d1.DZ *= d2.DZ;
+      return d1;
+    }
+
+    public static Dimensions3D operator *(Dimensions3D d1, short amount)
+    {
+      d1.DX *= amount;
+      d1.DY *= amount;
+      d1.DZ *= amount;
+      return d1;
+    }
 
     public Dimensions3D(short dy, short dx, short dz)
     {
