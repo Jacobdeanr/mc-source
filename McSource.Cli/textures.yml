@@ -66,11 +66,15 @@ textures:
   birch_planks: planks_birch
   birch_sapling: sapling_birch
   birch_slab: planks_birch
-  black_stained_glass: glass_black
+  black_stained_glass:
+    translucent: true
+    texture: glass_black
   black_wool: wool_colored_black
   blue_concrete: hardened_clay_stained_blue
   blue_orchid: flower_blue_orchid
-  blue_stained_glass: glass_blue
+  blue_stained_glass:
+    translucent: true
+    texture: glass_blue
   blue_terracotta: hardened_clay_stained_blue
   blue_wool: wool_colored_blue
   bone_block:
@@ -83,7 +87,9 @@ textures:
       stand: brewing_stand
   brown_concrete: hardened_clay_stained_brown
   brown_mushroom: mushroom_brown
-  brown_stained_glass: glass_brown
+  brown_stained_glass:
+    translucent: true
+    texture: glass_brown
   brown_terracotta: hardened_clay_stained_brown
   brown_wool: wool_colored_brown
   cactus:
@@ -175,7 +181,9 @@ textures:
       side: crafting_table_side
       top: crafting_table_top
   cyan_concrete: hardened_clay_stained_cyan
-  cyan_stained_glass: glass_cyan
+  cyan_stained_glass:
+    translucent: true
+    texture: glass_cyan
   cyan_terracotta: hardened_clay_stained_cyan
   cyan_wool: wool_colored_cyan
   dandelion: flower_dandelion
@@ -280,11 +288,15 @@ textures:
       side: grass_path_side
       top: grass_path_top
   gray_concrete: hardened_clay_stained_gray
-  gray_stained_glass: glass_gray
+  gray_stained_glass:
+    translucent: true
+    texture: glass_gray
   gray_terracotta: hardened_clay_stained_gray
   gray_wool: wool_colored_gray
   green_concrete: hardened_clay_stained_green
-  green_stained_glass: glass_green
+  green_stained_glass:
+    translucent: true
+    texture: glass_green
   green_terracotta: hardened_clay_stained_green
   green_wool: wool_colored_green
   hay_block:
@@ -323,15 +335,21 @@ textures:
     state:
       still: lava_still
   light_blue_concrete: hardened_clay_stained_light_blue
-  light_blue_stained_glass: glass_light_blue
+  light_blue_stained_glass:
+    translucent: true
+    texture: glass_light_blue
   light_blue_terracotta: hardened_clay_stained_light_blue
   light_blue_wool: wool_colored_light_blue
   lime_concrete: hardened_clay_stained_lime
-  lime_stained_glass: glass_lime
+  lime_stained_glass:
+    translucent: true
+    texture: glass_lime
   lime_terracotta: hardened_clay_stained_lime
   lime_wool: wool_colored_lime
   magenta_concrete: hardened_clay_stained_magenta
-  magenta_stained_glass: glass_magenta
+  magenta_stained_glass:
+    translucent: true
+    texture: glass_magenta
   magenta_terracotta: hardened_clay_stained_magenta
   magenta_wool: wool_colored_magenta
   magma_block: magma
@@ -371,14 +389,18 @@ textures:
   oak_sapling: sapling_oak
   oak_slab: planks_oak
   orange_concrete: hardened_clay_stained_orange
-  orange_stained_glass: glass_orange
+  orange_stained_glass:
+    translucent: true
+    texture: glass_orange
   orange_terracotta: hardened_clay_stained_orange
   orange_tulip: flower_tulip_orange
   orange_wool: wool_colored_orange
   oxeye_daisy: flower_oxeye_daisy
   paeonia: flower_paeonia
   pink_concrete: hardened_clay_stained_pink
-  pink_stained_glass: glass_pink
+  pink_stained_glass:
+    translucent: true
+    texture: glass_pink
   pink_terracotta: hardened_clay_stained_pink
   pink_tulip: flower_tulip_pink
   pink_wool: wool_colored_pink
@@ -393,19 +415,23 @@ textures:
   polished_granite: stone_granite_smooth
   polished_granite_slab: stone_granite_smooth
   potatoes:
+    translucent: true
     stages:
       - potatoes_stage_0
       - potatoes_stage_1
       - potatoes_stage_2
       - potatoes_stage_3
   powered_rail:
+    translucent: true
     states:
       default: rail_golden
       powered: rail_golden_powered
   prismarine: prismarine_rough
   pruple_wool: wool_colored_purple
   purple_concrete: hardened_clay_stained_purple
-  purple_stained_glass: glass_purple
+  purple_stained_glass:
+    translucent: true
+    texture: glass_purple
   purple_terracotta: hardened_clay_stained_purple
   purpur_pillar:
     sides:
@@ -425,7 +451,9 @@ textures:
       default: rail_normal
       turned: rail_normal_turned
   red_concrete: hardened_clay_stained_red
-  red_mushroom: mushroom_red
+  red_mushroom:
+    translucent: true
+    texture: mushroom_red
   red_nether_bricks: red_nether_brick
   red_nether_bricks_slab: red_nether_brick
   red_sandstone:
@@ -438,7 +466,9 @@ textures:
       bottom: red_sandstone_bottom
       sides: red_sandstone_normal
       top: red_sandstone_top
-  red_stained_glass: glass_red
+  red_stained_glass:
+    translucent: true
+    texture: glass_red
   red_terracotta: hardened_clay_stained_red
   red_tulip: flower_tulip_red
   red_wool: wool_colored_red
@@ -467,7 +497,9 @@ textures:
       top: sandstone_top
   sea_lantern: sea_lantern
   silver_concrete: hardened_clay_stained_silver
-  silver_stained_glass: glass_silver
+  silver_stained_glass: 
+    translucent: true
+    texture: glass_silver
   silver_terracotta: hardened_clay_stained_silver
   silver_wool: wool_colored_silver
   slime_block: slime
@@ -517,19 +549,29 @@ textures:
       side: tnt_side
       top: tnt_top
   torch:
+    translucent: true
     states:
       default: torch_off
       on: torch_on
-  trapdoor: trapdoor
-  tripwire: trip_wire
-  tripwire_hook: trip_wire_source
-  vine: vine
+  trapdoor:
+    translucent: true
+    texture: trapdoor
+#  tripwire:
+#    translucent: true
+#    texture: trip_wire
+#  tripwire_hook:
+#    translucent: true
+#    texture: trip_wire_source
+  vine:
+    translucent: true
+    texture: vine
   water:
     state:
       still: water_still
   waterlily: waterlily
   wet_sponge: sponge_wet
   wheat:
+    translucent: true
     stages:
       - wheat_stage_0
       - wheat_stage_1
@@ -540,11 +582,17 @@ textures:
       - wheat_stage_6
       - wheat_stage_7
   white_concrete: hardened_clay_stained_white
-  white_stained_glass: glass_white
+  white_stained_glass:
+    translucent: true
+    texture: glass_white
   white_terracotta: hardened_clay_stained_white
-  white_tulip: flower_tulip_white
+  white_tulip:
+    translucent: true
+    texture: flower_tulip_white
   white_wool: wool_colored_white
   yellow_concrete: hardened_clay_stained_yellow
-  yellow_stained_glass: glass_yellow
+  yellow_stained_glass:
+    translucent: true
+    texture: glass_yellow
   yellow_terracotta: hardened_clay_stained_yellow
   yellow_wool: wool_colored_yellow

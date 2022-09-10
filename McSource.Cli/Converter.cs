@@ -11,6 +11,7 @@ using VmfSharp;
 namespace McSource.Cli
 {
   /* Milestones:
+   * todo: add 'translucent' flags to block for 'isEncased' check
    * todo: create skybox
    * todo: parse block properties
    * todo: parse block entity data
