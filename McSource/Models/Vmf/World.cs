@@ -15,7 +15,7 @@ namespace McSource.Models.Vmf
     public string DetailMaterial { get; } = "detail/detailsprites";
     public string DetailVbsp { get; } = "detail.vbsp";
     public int MaxPropScreenWidth { get; } = -1;
-    public string SkyName { get; } = "minecraft/MCLITE";
+    public string SkyName { get; } = "MCLITE";
 
     public ICollection<Solid> Solids { get; set; } = Array.Empty<Solid>();
 

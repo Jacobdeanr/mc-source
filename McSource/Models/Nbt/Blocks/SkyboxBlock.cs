@@ -15,7 +15,7 @@ namespace McSource.Models.Nbt.Blocks
 {
   public class SkyboxBlock : TexturedBlock
   {
-    private static readonly BlockInfo BlockInfo = new BlockInfo("toolsskybox", "tools");
+    private static readonly BlockInfo BlockInfo = new BlockInfo("tools", "toolsskybox");
 
     public SkyboxBlock([NotNull] ISchematic parent, Coordinates coordinates, Dimensions3D dimensions) : base(parent, BlockInfo, coordinates)
     {

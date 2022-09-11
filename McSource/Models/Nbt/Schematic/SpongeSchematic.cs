@@ -107,7 +107,7 @@ namespace McSource.Models.Nbt.Schematic
             if (yBlocks.Any())
             {
               var blockGroup = new BlockGroup(McDirection3D.Top, block, yBlocks.ToArray());
-              Log.Info($"+Group: {blockGroup}");
+              // Log.Info($"+Group: {blockGroup}");
               solids.Add(blockGroup.ToModel(map));
               continue;
             }
@@ -124,7 +124,7 @@ namespace McSource.Models.Nbt.Schematic
             if (xBlocks.Any())
             {
               var group = new BlockGroup(McDirection3D.East, block, xBlocks.ToArray());
-              Log.Info($"+Group: {@group}");
+              // Log.Info($"+Group: {@group}");
               solids.Add(@group.ToModel(map));
               continue;
             }
@@ -141,7 +141,7 @@ namespace McSource.Models.Nbt.Schematic
             if (zBlocks.Any())
             {
               var group = new BlockGroup(McDirection3D.North, block, zBlocks.ToArray());
-              Log.Info($"+Group: {@group}");
+              // Log.Info($"+Group: {@group}");
               solids.Add(@group.ToModel(map));
               continue;
             }
