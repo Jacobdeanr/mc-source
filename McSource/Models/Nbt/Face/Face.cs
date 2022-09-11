@@ -26,6 +26,6 @@ namespace McSource.Models.Nbt.Face
       MaterialPath = materialPath;
     }
 
-    public abstract Side? ToModel(IVmfRoot root);
+    public abstract Side ToModel(IVmfRoot root);
   }
 }

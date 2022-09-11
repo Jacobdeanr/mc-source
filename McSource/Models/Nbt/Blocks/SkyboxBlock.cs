@@ -13,7 +13,7 @@ using VmfSharp;
 
 namespace McSource.Models.Nbt.Blocks
 {
-  public class SkyboxBlock : TexturedBlock<SolidFace>
+  public class SkyboxBlock : TexturedBlock
   {
     private static readonly BlockInfo BlockInfo = new BlockInfo("toolsskybox", "tools");
 
@@ -40,7 +40,7 @@ namespace McSource.Models.Nbt.Blocks
       return solid;
     }
 
-    protected override SolidFace GetFace(McDirection3D pos)
+    protected override Face.Face GetFace(McDirection3D pos)
     {
       return new SolidFace(this, pos, BlockInfo.ToPath());
     }

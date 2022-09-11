@@ -99,5 +99,10 @@ namespace McSource.Models.Nbt
     {
       return HashCode.Combine(base.GetHashCode(), DY);
     }
+
+    public override string ToString()
+    {
+      return $"X: {DX} / Y: {DY} / Z: {DZ}";
+    }
   }
 }

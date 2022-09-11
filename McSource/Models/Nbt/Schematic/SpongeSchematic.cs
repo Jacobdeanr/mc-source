@@ -7,6 +7,7 @@ using McSource.Logging;
 using McSource.Models.Nbt.BlockEntities;
 using McSource.Models.Nbt.Blocks;
 using McSource.Models.Nbt.Blocks.Abstract;
+using McSource.Models.Nbt.Enums;
 using McSource.Models.Nbt.Structs;
 using McSource.Models.Vmf;
 
@@ -57,13 +58,16 @@ namespace McSource.Models.Nbt.Schematic
     {
     }
 
+
     public override Map ToModel()
     {
       var map = new Map();
+      map.World = new World(map);
+
       var solids = new List<Solid?>
       {
         // Skybox: South
-        new SkyboxBlock(this, new Coordinates(0, 0, -1), new Dimensions3D(Dimensions.DX, Dimensions.DY, 1)).ToModel(map), 
+        new SkyboxBlock(this, new Coordinates(0, 0, -1), new Dimensions3D(Dimensions.DX, Dimensions.DY, 1)).ToModel(map),
         // Skybox: North
         new SkyboxBlock(this, new Coordinates(0, 0, Dimensions.DZ), new Dimensions3D(Dimensions.DX, Dimensions.DY, 1)).ToModel(map),
 
@@ -81,20 +85,89 @@ namespace McSource.Models.Nbt.Schematic
       foreach (var block in Blocks)
       {
         block.Prepare();
-        if (!block.CanDraw)
-        {
-          continue;
-        }
-        
-        solids.Add(block.ToModel(map));
       }
+
+      // todo inefficient
+      
+      for (short z = 0; z < Dimensions.DZ; z++)
+      for (short x = 0; x < Dimensions.DX; x++)
+      for (short y = 0; y < Dimensions.DY; y++)
+      {
+        if (TryGet(x, y, z, out var block) && block is {CanDraw: true, BlockGroup: null})
+        {
+            // Y
+          
+            var ty = y;
+            var yBlocks = new List<Block>();
+            while (TryGet(x, ++ty, z, out var nextBlock) && nextBlock is {CanDraw: true, BlockGroup: null} && block.Equals(nextBlock))
+            {
+              yBlocks.Add(nextBlock);
+            }
+
+            if (yBlocks.Any())
+            {
+              var blockGroup = new BlockGroup(McDirection3D.Top, block, yBlocks.ToArray());
+              Log.Info($"+Group: {blockGroup}");
+              solids.Add(blockGroup.ToModel(map));
+              continue;
+            }
+
+            // X
+            
+            var tx = x;
+            var xBlocks = new List<Block>();
+            while (TryGet(++tx, y, z, out var nextBlock) && nextBlock is {CanDraw: true, BlockGroup: null} && block.Equals(nextBlock))
+            {
+              xBlocks.Add(nextBlock);
+            }
+
+            if (xBlocks.Any())
+            {
+              var group = new BlockGroup(McDirection3D.East, block, xBlocks.ToArray());
+              Log.Info($"+Group: {@group}");
+              solids.Add(@group.ToModel(map));
+              continue;
+            }
+
+            // Z
+            
+            var tz = z;
+            var zBlocks = new List<Block>();
+            while (TryGet(x, y, ++tz, out var nextBlock) && nextBlock is {CanDraw: true, BlockGroup: null} && block.Equals(nextBlock))
+            {
+              zBlocks.Add(nextBlock);
+            }
+
+            if (zBlocks.Any())
+            {
+              var group = new BlockGroup(McDirection3D.North, block, zBlocks.ToArray());
+              Log.Info($"+Group: {@group}");
+              solids.Add(@group.ToModel(map));
+              continue;
+            }
+
+        }
+      }
+
+      var t1 = solids.Count;
+      Log.Info($"Grouped solids: {solids.Count}");
+
+      foreach (var block in Blocks)
+      {
+        if (block is {CanDraw: true, BlockGroup: null})
+        {
+          // Log.Info($"+Single: {block}");
+          solids.Add(block.ToModel(map));
+        }
+      }
+
+      Log.Info($"Single Solids: {solids.Count - t1}");
 
       map.World = new World(map)
       {
         Solids = solids
       };
-
-      Log.Info($"Solids: {map.World.Solids.Count}");
+      Log.Info($"Total Solids: {solids.Count}");
       return map;
     }
 

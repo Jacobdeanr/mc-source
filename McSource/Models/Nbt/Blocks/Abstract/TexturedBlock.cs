@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using McSource.Logging;
 using McSource.Models.Nbt.BlockEntities;
@@ -11,52 +13,65 @@ using VmfSharp;
 
 namespace McSource.Models.Nbt.Blocks.Abstract
 {
-  public abstract class TexturedBlock<TFace> : Block
-    where TFace : Face.Face
+  public abstract class TexturedBlock : Block
   {
-    
     protected TexturedBlock([NotNull] ISchematic parent, BlockInfo info, Coordinates coordinates,
       [CanBeNull] BlockEntity? blockEntity = default) : base(parent, info, coordinates, blockEntity)
     {
     }
 
-    protected abstract TFace GetFace(McDirection3D pos);
-
     public override Vmf.Solid? ToModel(IVmfRoot root)
     {
-      var neighbors = GetNeighbors();
       var solid = new Vmf.Solid(root);
-
-      var sides = new List<Vmf.Side>();
-      var opaqueNeighborCount = 0;
-      foreach (var (position, block) in neighbors)
+      
+      if (BlockGroup == null)
       {
-        if (block == null || block.Translucent)
+        // todo merge neighbour information when added to blockgroup
+
+        var neighbors = GetNeighbors();
+
+        var sides = new List<Vmf.Side>();
+        var opaqueNeighborCount = 0;
+        foreach (var (position, block) in neighbors)
         {
-          // Draw face
-          sides.Add(GetFace(position).ToModel(solid));
-          continue;
+          if (block == null || block.Translucent)
+          {
+            // Draw face
+            sides.Add(GetFace(position).ToModel(solid));
+            continue;
+          }
+
+          // Face not visible => don't draw
+          opaqueNeighborCount++;
+          sides.Add(SolidFace.NoDraw(this, position).ToModel(solid));
         }
 
-        // Face not visible => don't draw
-        opaqueNeighborCount++;
-        sides.Add(SolidFace.NoDraw(this, position).ToModel(solid));
-      }
+        if (opaqueNeighborCount == 6)
+        {
+          // Completely encased => ignore block
+          return null;
+        }
 
-      if (opaqueNeighborCount == 6)
+        solid.Sides = sides;
+      }
+      else
       {
-        // Completely encased => ignore block
-        return null;
+        solid.Sides = Enum.GetValues(typeof(McDirection3D))
+          .Cast<McDirection3D>()
+          .Select(d => GetFace(d).ToModel(solid))
+          .ToArray();
       }
 
-      solid.Sides = sides;
       solid.Editor = new Editor(solid)
       {
         Color = new Rgb(0, 180, 0),
         VisGroupShown = true,
         VisGroupAutoShown = true
       };
+
       return solid;
     }
+
+    protected abstract Face.Face GetFace(McDirection3D pos);
   }
 }

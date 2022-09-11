@@ -135,6 +135,27 @@ namespace McSource.Models.Nbt.Blocks.Abstract
         [McDirection3D.North] = Parent.GetOrDefault(Coordinates.X, Coordinates.Y, Coordinates.Z - 1)
       };
 
+    public BlockGroup? BlockGroup { get; set; }
+
+    public void Extend(int amount, McDirection3D direction)
+    {
+      switch (direction)
+      {
+        case McDirection3D.East:
+        case McDirection3D.West:
+          Dimensions.DY += (short) (Dimensions.DY * amount);
+          break;
+        case McDirection3D.North:
+        case McDirection3D.South:
+          Dimensions.DZ += (short) (Dimensions.DZ * amount);
+          break;
+        case McDirection3D.Top: 
+        case McDirection3D.Bottom:
+          Dimensions.DX += (short) (Dimensions.DX * amount); // do not change
+          break;
+      }
+    }
+      
     public abstract Solid? ToModel(IVmfRoot root);
 
     public override string ToString()
