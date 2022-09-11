@@ -93,13 +93,13 @@ namespace McSource.Models.Nbt.Schematic
       for (short x = 0; x < Dimensions.DX; x++)
       for (short y = 0; y < Dimensions.DY; y++)
       {
-        if (TryGet(x, y, z, out var block) && block is {CanDraw: true, BlockGroup: null})
+        if (TryGet(x, y, z, out var block) && block is {CanDraw: true, ParentBlockGroup: null})
         {
             // Y
           
             var ty = y;
             var yBlocks = new List<Block>();
-            while (TryGet(x, ++ty, z, out var nextBlock) && nextBlock is {CanDraw: true, BlockGroup: null} && block.Equals(nextBlock))
+            while (TryGet(x, ++ty, z, out var nextBlock) && nextBlock is {CanDraw: true, ParentBlockGroup: null} && block.Equals(nextBlock))
             {
               yBlocks.Add(nextBlock);
             }
@@ -116,7 +116,7 @@ namespace McSource.Models.Nbt.Schematic
             
             var tx = x;
             var xBlocks = new List<Block>();
-            while (TryGet(++tx, y, z, out var nextBlock) && nextBlock is {CanDraw: true, BlockGroup: null} && block.Equals(nextBlock))
+            while (TryGet(++tx, y, z, out var nextBlock) && nextBlock is {CanDraw: true, ParentBlockGroup: null} && block.Equals(nextBlock))
             {
               xBlocks.Add(nextBlock);
             }
@@ -133,7 +133,7 @@ namespace McSource.Models.Nbt.Schematic
             
             var tz = z;
             var zBlocks = new List<Block>();
-            while (TryGet(x, y, ++tz, out var nextBlock) && nextBlock is {CanDraw: true, BlockGroup: null} && block.Equals(nextBlock))
+            while (TryGet(x, y, ++tz, out var nextBlock) && nextBlock is {CanDraw: true, ParentBlockGroup: null} && block.Equals(nextBlock))
             {
               zBlocks.Add(nextBlock);
             }
@@ -154,7 +154,7 @@ namespace McSource.Models.Nbt.Schematic
 
       foreach (var block in Blocks)
       {
-        if (block is {CanDraw: true, BlockGroup: null})
+        if (block is {CanDraw: true, ParentBlockGroup: null})
         {
           // Log.Info($"+Single: {block}");
           solids.Add(block.ToModel(map));

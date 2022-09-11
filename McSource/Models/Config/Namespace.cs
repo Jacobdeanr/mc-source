@@ -11,15 +11,12 @@ namespace McSource.Models.Config
     {
       
     }
-    public Namespace(IDictionary<object, object> root)
-      : this(root.ToDictionary(pair => pair.Key.ToString(), pair => new Block(pair.Value)))
-    {
-      
-    }
     
-    public Namespace(IDictionary<string, Block> root)
+    public Namespace(IDictionary<object, object> root)
     {
-      Blocks = root;
+      Blocks = root.ToDictionary(
+        pair => pair.Key.ToString(),
+        pair => new Block(this, pair.Key.ToString(), pair.Value));
     }
   }
 }

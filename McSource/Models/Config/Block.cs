@@ -6,16 +6,23 @@ namespace McSource.Models.Config
 {
   public class Block
   {
+    public Namespace Namespace { get; set; }
+
+    public string BlockId { get; set; }
+
     public BlockType Type { get; set; } = BlockType.Block;
     public bool Translucent { get; set; }
     public Texture Texture { get; set; }
 
-    public Block(object root) : this((IDictionary<object, object>) root)
+    public Block(Namespace ns, string blockId, object root) : this(ns, blockId, (IDictionary<object, object>) root)
     {
     }
-    
-    public Block(IDictionary<object, object> root)
+
+    public Block(Namespace ns, string blockId, IDictionary<object, object> root)
     {
+      Namespace = ns;
+      BlockId = blockId;
+      
       if (root.TryGetValue("type", out var typeValue))
       {
         if (Enum.TryParse<BlockType>(typeValue.ToString(), true, out var type))
@@ -36,13 +43,13 @@ namespace McSource.Models.Config
         }
         else
         {
-          Log.Error($"Could not parse 'translucent' value for {nameof(Block)}");
+          Log.Error($"Could not parse 'translucent: {translucentValue}' for {nameof(Block)}");
         }
       }
 
       if (root.TryGetValue("texture", out var textureValue))
       {
-        Texture = new Texture(textureValue);
+        Texture = new Texture(Namespace, BlockId, textureValue);
       }
     }
   }

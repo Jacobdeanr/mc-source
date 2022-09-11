@@ -7,7 +7,7 @@ namespace McSource.Logging.Extensions
   {
 
     /// <summary>
-    /// Get the initial character of the LogLevel name
+    /// GetSide the initial character of the LogLevel name
     /// </summary>
     /// <param name="logLevel">The log level.</param>
     /// <returns></returns>

@@ -36,7 +36,7 @@ namespace McSource.Models.Nbt.Face
       var pZ = dims.DZ;
 
       const int translation = 0;
-      const double scaling = 0.3125;
+      const double scaling = 0.3125 / 2;
 
       switch (FaceDirection.ToValve())
       {

@@ -13,6 +13,7 @@ using McSource.Models.Nbt.Schematic;
 using McSource.Models.Nbt.Structs;
 using McSource.Models.Vmf;
 using VmfSharp;
+using Side = McSource.Models.Config.Side;
 
 namespace McSource.Models.Nbt.Blocks.Abstract
 {
@@ -53,7 +54,7 @@ namespace McSource.Models.Nbt.Blocks.Abstract
     public BlockEntity? BlockEntity { get; set; }
 
     protected Block(ISchematic parent,
-      BlockInfo info, Coordinates coordinates, BlockEntity? blockEntity = default, Config.Block? config = default)
+      BlockInfo info, Coordinates coordinates, Config.Block? config, BlockEntity? blockEntity = default)
     {
       Parent = parent;
       Info = info;
@@ -62,13 +63,30 @@ namespace McSource.Models.Nbt.Blocks.Abstract
       Dimensions = new Dimensions3D(1);
 
       Config = config;
+      if (config != null)
+      {
+        Translucent = config.Translucent;
+      }
     }
 
     public bool IsEncased { get; set; }
 
     public virtual void Prepare()
     {
-      IsEncased =  GetNeighbors().Values.Count(neighbor => neighbor?.Translucent == false) == 6;
+      int count = 0;
+      foreach (var neighbor in GetNeighbors().Values)
+      {
+        if (neighbor?.Translucent == false)
+        {
+          if (neighbor.Info.Id.Contains("water"))
+          {
+            
+          }
+          count++;
+        }
+      }
+
+      IsEncased =  count == 6;
     }
 
     private static Config.Block? GetConfigEntry(Config.Config config, BlockInfo info)
@@ -119,7 +137,7 @@ namespace McSource.Models.Nbt.Blocks.Abstract
           break;
       }
 
-      return new SolidBlock(parent, blockInfo, coordinates, blockEntity);
+      return new SolidBlock(parent, blockInfo, coordinates, config, blockEntity);
     }
 
     public IDictionary<McDirection3D, Block?> GetNeighbors() =>
@@ -135,7 +153,7 @@ namespace McSource.Models.Nbt.Blocks.Abstract
         [McDirection3D.North] = Parent.GetOrDefault(Coordinates.X, Coordinates.Y, Coordinates.Z - 1)
       };
 
-    public BlockGroup? BlockGroup { get; set; }
+    public BlockGroup? ParentBlockGroup { get; set; }
 
     public void Extend(int amount, McDirection3D direction)
     {

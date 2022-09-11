@@ -2,9 +2,6 @@
 {
   public enum SidePosition
   {
-    Default,
-    Sides,
-    
     Left,
     Right,
     Bottom,

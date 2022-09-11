@@ -20,7 +20,7 @@ namespace McSource.Models.Nbt.Schematic
         Length++;
       
         _end = block;
-        _end.BlockGroup = this;
+        _end.ParentBlockGroup = this;
       }
     }
 
@@ -34,7 +34,7 @@ namespace McSource.Models.Nbt.Schematic
       Direction = direction;
       
       _start = start;
-      _start.BlockGroup = this;
+      _start.ParentBlockGroup = this;
     }
 
     public Solid? ToModel(IVmfRoot root)

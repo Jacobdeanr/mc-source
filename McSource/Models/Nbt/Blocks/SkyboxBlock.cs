@@ -17,7 +17,7 @@ namespace McSource.Models.Nbt.Blocks
   {
     private static readonly BlockInfo BlockInfo = new BlockInfo("tools", "toolsskybox");
 
-    public SkyboxBlock([NotNull] ISchematic parent, Coordinates coordinates, Dimensions3D dimensions) : base(parent, BlockInfo, coordinates)
+    public SkyboxBlock([NotNull] ISchematic parent, Coordinates coordinates, Dimensions3D dimensions) : base(parent, BlockInfo, coordinates, null)
     {
       Translucent = true;
       Dimensions = dimensions;
