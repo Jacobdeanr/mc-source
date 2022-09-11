@@ -18,6 +18,8 @@ namespace McSource.Models.Nbt.Blocks.Abstract
 {
   public abstract class Block : IVmfModelConvertible<Vmf.Solid>, IEquatable<Block>
   {
+    public virtual bool CanDraw => !IsEncased;
+    
     protected Config.Block? Config { get; }
 
     /// <summary>

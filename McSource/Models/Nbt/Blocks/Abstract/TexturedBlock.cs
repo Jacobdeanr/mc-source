@@ -14,6 +14,7 @@ namespace McSource.Models.Nbt.Blocks.Abstract
   public abstract class TexturedBlock<TFace> : Block
     where TFace : Face.Face
   {
+    
     protected TexturedBlock([NotNull] ISchematic parent, BlockInfo info, Coordinates coordinates,
       [CanBeNull] BlockEntity? blockEntity = default) : base(parent, info, coordinates, blockEntity)
     {

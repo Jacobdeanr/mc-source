@@ -11,6 +11,8 @@ namespace McSource.Models.Nbt.Blocks
 {
   public class IgnoredBlock : Block
   {
+    public override bool CanDraw { get; } = false;
+
     public IgnoredBlock(ISchematic parent, BlockInfo info, Coordinates coordinates, BlockEntity? blockEntity = default)
       : base(parent, info, coordinates, blockEntity)
     {

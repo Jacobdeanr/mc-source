@@ -81,7 +81,7 @@ namespace McSource.Models.Nbt.Schematic
       foreach (var block in Blocks)
       {
         block.Prepare();
-        if (block.IsEncased || block is IgnoredBlock)
+        if (!block.CanDraw)
         {
           continue;
         }
