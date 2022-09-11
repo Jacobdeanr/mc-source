@@ -23,6 +23,10 @@ namespace McSource.Models.Nbt.Blocks
       Dimensions = dimensions;
     }
 
+    public override void Prepare()
+    {
+    }
+
     public override Solid? ToModel(IVmfRoot root)
     {
       var solid = new Vmf.Solid(root);

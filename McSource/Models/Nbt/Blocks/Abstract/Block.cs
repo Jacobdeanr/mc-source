@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text.RegularExpressions;
+using McSource.Extensions;
 using McSource.Logging;
 using McSource.Models.Config;
 using McSource.Models.Nbt.BlockEntities;
@@ -15,8 +18,6 @@ namespace McSource.Models.Nbt.Blocks.Abstract
 {
   public abstract class Block : IVmfModelConvertible<Vmf.Solid>, IEquatable<Block>
   {
-    public Block? BlockGroupRoot { get; set; }
-
     protected Config.Block? Config { get; }
 
     /// <summary>
@@ -49,8 +50,8 @@ namespace McSource.Models.Nbt.Blocks.Abstract
     /// </summary>
     public BlockEntity? BlockEntity { get; set; }
 
-    protected Block(ISchematic parent, BlockInfo info, Coordinates coordinates, BlockEntity? blockEntity = default,
-      Config.Block? config = default)
+    protected Block(ISchematic parent,
+      BlockInfo info, Coordinates coordinates, BlockEntity? blockEntity = default, Config.Block? config = default)
     {
       Parent = parent;
       Info = info;
@@ -59,6 +60,13 @@ namespace McSource.Models.Nbt.Blocks.Abstract
       Dimensions = new Dimensions3D(1);
 
       Config = config;
+    }
+
+    public bool IsEncased { get; set; }
+
+    public virtual void Prepare()
+    {
+      IsEncased =  GetNeighbors().Values.Count(neighbor => neighbor?.Translucent == false) == 6;
     }
 
     private static Config.Block? GetConfigEntry(Config.Config config, BlockInfo info)
@@ -76,6 +84,7 @@ namespace McSource.Models.Nbt.Blocks.Abstract
       return block;
     }
 
+    [SuppressMessage("ReSharper", "RedundantCaseLabel")]
     public static Block Create(ISchematic parent,
       BlockInfo blockInfo, Coordinates coordinates, BlockEntity? blockEntity = default)
     {
@@ -102,6 +111,7 @@ namespace McSource.Models.Nbt.Blocks.Abstract
           break;
         case BlockType.Ignored:
           return new IgnoredBlock(parent, blockInfo, coordinates, blockEntity);
+        default:
         case BlockType.Block:
           // Use fallback method return
           break;
@@ -113,14 +123,14 @@ namespace McSource.Models.Nbt.Blocks.Abstract
     public IDictionary<McDirection3D, Block?> GetNeighbors() =>
       new Dictionary<McDirection3D, Block?>(6)
       {
-        [McDirection3D.East] = Parent.GetOrDefault(Coordinates.Clone().MoveX(-1)),
-        [McDirection3D.West] = Parent.GetOrDefault(Coordinates.Clone().MoveX(1)),
+        [McDirection3D.East] = Parent.GetOrDefault(Coordinates.X - 1, Coordinates.Y, Coordinates.Z),
+        [McDirection3D.West] = Parent.GetOrDefault(Coordinates.X + 1, Coordinates.Y, Coordinates.Z),
 
-        [McDirection3D.Bottom] = Parent.GetOrDefault(Coordinates.Clone().MoveY(-1)),
-        [McDirection3D.Top] = Parent.GetOrDefault(Coordinates.Clone().MoveY(1)),
+        [McDirection3D.Bottom] = Parent.GetOrDefault(Coordinates.X, Coordinates.Y - 1, Coordinates.Z),
+        [McDirection3D.Top] = Parent.GetOrDefault(Coordinates.X, Coordinates.Y + 1, Coordinates.Z),
 
-        [McDirection3D.South] = Parent.GetOrDefault(Coordinates.Clone().MoveZ(1)),
-        [McDirection3D.North] = Parent.GetOrDefault(Coordinates.Clone().MoveZ(-1))
+        [McDirection3D.South] = Parent.GetOrDefault(Coordinates.X, Coordinates.Y, Coordinates.Z + 1),
+        [McDirection3D.North] = Parent.GetOrDefault(Coordinates.X, Coordinates.Y, Coordinates.Z - 1)
       };
 
     public abstract Solid? ToModel(IVmfRoot root);
@@ -168,32 +178,6 @@ namespace McSource.Models.Nbt.Blocks.Abstract
     public override int GetHashCode()
     {
       return HashCode.Combine(Info, BlockEntity);
-    }
-
-    public McDirection3D? Extended { get; set; } = null;
-    
-    public void Extend(Block block, McDirection3D direction)
-    {
-      var coords = Coordinates;
-      switch (direction)
-      {
-        case McDirection3D.Top:
-          Extended = direction;
-          Dimensions.DX += block.Dimensions.DX;
-          break;
-        case McDirection3D.South:
-          Extended = direction;
-          Dimensions.DZ += block.Dimensions.DZ;
-          break;
-        case McDirection3D.East:
-          Extended = direction;
-          Dimensions.DY += block.Dimensions.DY;
-          break;
-        default:
-          throw new ArgumentOutOfRangeException($"Extending a block in {nameof(direction)} '{direction}' is currently not supported");
-      }
-
-      Coordinates = coords;
     }
   }
 }

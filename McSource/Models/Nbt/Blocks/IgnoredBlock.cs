@@ -17,9 +17,13 @@ namespace McSource.Models.Nbt.Blocks
       Translucent = true;
     }
 
+    public override void Prepare()
+    {
+    }
+
     public override Solid? ToModel(IVmfRoot root)
     {
-      return null;
+      throw new NotImplementedException($"{nameof(IgnoredBlock)}s can not be converted to Models");
     }
   }
 }

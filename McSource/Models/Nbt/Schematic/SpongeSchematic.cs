@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using fNbt;
+using McSource.Extensions;
 using McSource.Logging;
 using McSource.Models.Nbt.BlockEntities;
 using McSource.Models.Nbt.Blocks;
@@ -16,27 +17,6 @@ namespace McSource.Models.Nbt.Schematic
   /// </summary>
   public class SpongeSchematic : Schematic<NbtCompound>
   {
-    public static Dimensions3D LoadDimensions(NbtCompound rootTag)
-    {
-      return new Dimensions3D
-      {
-        DY = rootTag.Get<NbtShort>("Height")!.Value,
-        DX = rootTag.Get<NbtShort>("Width")!.Value,
-        DZ = rootTag.Get<NbtShort>("Length")!.Value
-      };
-    }
-
-    public Coordinates CalcBlockCoordinates(int index, Dimensions3D dimensions)
-    {
-      // index = (y * length + z) * width + x
-      return new Coordinates
-      {
-        Y = index / (Dimensions.DX * Dimensions.DZ),
-        Z = (index % (Dimensions.DX * Dimensions.DZ)) / Dimensions.DX,
-        X = (index % (Dimensions.DX * Dimensions.DZ)) % Dimensions.DX,
-      };
-    }
-
     private Dictionary<int, string> LoadPalette(NbtCompound rootTag)
     {
       return rootTag
@@ -60,7 +40,6 @@ namespace McSource.Models.Nbt.Schematic
     }
 
 
-    // todo cleanup
     public static ISchematic? FromTag(NbtCompound rootTag, Config.Config config)
     {
       try
@@ -78,29 +57,44 @@ namespace McSource.Models.Nbt.Schematic
     {
     }
 
-    public Block[] MakeSkyBox(short thickness = 1)
-    {
-      return new Block[]
-      {
-        new SkyboxBlock(this, new Coordinates(0, 0, -thickness), new Dimensions3D(Dimensions.DX, Dimensions.DY, thickness)), // South
-        new SkyboxBlock(this, new Coordinates(0, 0, Dimensions.DZ), new Dimensions3D(Dimensions.DX, Dimensions.DY, thickness)), // North
-
-        new SkyboxBlock(this, new Coordinates(-thickness, 0, 0), new Dimensions3D(thickness, Dimensions.DY, Dimensions.DZ)), // West
-        new SkyboxBlock(this, new Coordinates(Dimensions.DX, 0, 0), new Dimensions3D(thickness, Dimensions.DY, Dimensions.DZ)), // East
-
-        new SkyboxBlock(this, new Coordinates(0, Dimensions.DY, 0), new Dimensions3D(Dimensions.DX, thickness, Dimensions.DZ)), // Top
-        new SkyboxBlock(this, new Coordinates(0, -thickness, 0), new Dimensions3D(Dimensions.DX, thickness, Dimensions.DZ)), // Bottom
-      };
-    }
-
     public override Map ToModel()
     {
-      var solids = new List<Block?>();
-      solids.AddRange(MakeSkyBox());
-      solids.AddRange(Blocks.Cast<Block?>());
-
       var map = new Map();
-      map.World = new World(map) {Solids = solids.Select(b => b?.ToModel(map)).ToArray()};
+      var solids = new List<Solid?>
+      {
+        // Skybox: South
+        new SkyboxBlock(this, new Coordinates(0, 0, -1), new Dimensions3D(Dimensions.DX, Dimensions.DY, 1)).ToModel(map), 
+        // Skybox: North
+        new SkyboxBlock(this, new Coordinates(0, 0, Dimensions.DZ), new Dimensions3D(Dimensions.DX, Dimensions.DY, 1)).ToModel(map),
+
+        // Skybox: West
+        new SkyboxBlock(this, new Coordinates(-1, 0, 0), new Dimensions3D(1, Dimensions.DY, Dimensions.DZ)).ToModel(map),
+        // Skybox: East
+        new SkyboxBlock(this, new Coordinates(Dimensions.DX, 0, 0), new Dimensions3D(1, Dimensions.DY, Dimensions.DZ)).ToModel(map),
+
+        // Skybox: Top
+        new SkyboxBlock(this, new Coordinates(0, Dimensions.DY, 0), new Dimensions3D(Dimensions.DX, 1, Dimensions.DZ)).ToModel(map), // Top
+        // Skybox: Bottom
+        new SkyboxBlock(this, new Coordinates(0, -1, 0), new Dimensions3D(Dimensions.DX, 1, Dimensions.DZ)).ToModel(map),
+      };
+
+      foreach (var block in Blocks)
+      {
+        block.Prepare();
+        if (block.IsEncased || block is IgnoredBlock)
+        {
+          continue;
+        }
+        
+        solids.Add(block.ToModel(map));
+      }
+
+      map.World = new World(map)
+      {
+        Solids = solids
+      };
+
+      Log.Info($"Solids: {map.World.Solids.Count}");
       return map;
     }
 
@@ -111,7 +105,12 @@ namespace McSource.Models.Nbt.Schematic
     /// <exception cref="ArgumentException"></exception>
     public override ISchematic Load(NbtCompound rootTag)
     {
-      Dimensions = LoadDimensions(rootTag);
+      Dimensions = new Dimensions3D
+      {
+        DY = rootTag.Get<NbtShort>("Height")!.Value,
+        DX = rootTag.Get<NbtShort>("Width")!.Value,
+        DZ = rootTag.Get<NbtShort>("Length")!.Value
+      };
       Blocks = new Block[Dimensions.DX, Dimensions.DY, Dimensions.DZ];
 
       var palette = LoadPalette(rootTag);
@@ -140,10 +139,16 @@ namespace McSource.Models.Nbt.Schematic
           }
         }
 
-        var coordinates = CalcBlockCoordinates(index, Dimensions);
+        // index = (y * length + z) * width + x
+        var coordinates = new Coordinates
+        {
+          Y = index / (Dimensions.DX * Dimensions.DZ),
+          Z = Dimensions.DZ - 1 - ((index % (Dimensions.DX * Dimensions.DZ)) / Dimensions.DX),
+          X = (index % (Dimensions.DX * Dimensions.DZ)) % Dimensions.DX,
+        };
         var blockEntity = blockEntities.FirstOrDefault(be => coordinates == be.Coordinates);
 
-        Add(Block.Create(this, BlockInfo.FromString(palette[value]), coordinates, blockEntity), coordinates);
+        this.Add(Block.Create(this, BlockInfo.FromString(palette[value]), coordinates, blockEntity), coordinates);
 
         index++;
       }
