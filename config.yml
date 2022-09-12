@@ -92,9 +92,12 @@ textures:
       texture: sapling_birch
     birch_slab:
       texture: birch_planks
+    glass_block:
+      translucent: true
+    glass:
+      translucent: true
     black_stained_glass:
       translucent: true
-
     blue_stained_glass:
       translucent: true
     bone_block:
@@ -222,8 +225,6 @@ textures:
           top: crafting_table_top
     oak_stairs:
       texture: oak_planks
-    cyan_concrete:
-      texture: hardened_clay_stained_cyan
     cyan_stained_glass:
       translucent: true
     dark_oak_door:
@@ -362,12 +363,8 @@ textures:
         sides:
           side: grass_path_side
           top: grass_path_top
-    gray_concrete:
-      texture: hardened_clay_stained_gray
     gray_stained_glass:
       translucent: true
-    green_concrete:
-      texture: hardened_clay_stained_green
     green_stained_glass:
       translucent: true
     hay_block:
@@ -420,16 +417,10 @@ textures:
       texture: lava_still
 #        state:
 #          still: lava_still
-    light_blue_concrete:
-      texture: hardened_clay_stained_light_blue
     light_blue_stained_glass:
       translucent: true
-    lime_concrete:
-      texture: hardened_clay_stained_lime
     lime_stained_glass:
       translucent: true
-    magenta_concrete:
-      texture: hardened_clay_stained_magenta
     magenta_stained_glass:
       translucent: true
     magma_block:
@@ -482,15 +473,8 @@ textures:
       texture: sapling_oak
     oak_slab:
       texture: oak_planks
-    orange_concrete:
-      texture: hardened_clay_stained_orange
     orange_stained_glass:
       translucent: true
-
-
-
-    pink_concrete:
-      texture: hardened_clay_stained_pink
     pink_stained_glass:
       translucent: true
 
@@ -527,8 +511,6 @@ textures:
           powered: rail_golden_powered
     prismarine:
       texture: prismarine_rough
-    purple_concrete:
-      texture: hardened_clay_stained_purple
     purple_stained_glass:
       translucent: true
     purpur_stairs: 
@@ -560,8 +542,6 @@ textures:
         states:
           default: rail_normal
           turned: rail_normal_turned
-    red_concrete:
-      texture: hardened_clay_stained_red
     red_mushroom:
       translucent: true
       texture: mushroom_red
@@ -615,8 +595,6 @@ textures:
           top: sandstone_top
     sea_lantern:
       texture: sea_lantern
-    silver_concrete:
-      texture: hardened_clay_stained_silver
     silver_stained_glass:
       translucent: true
     slime_block:
@@ -723,8 +701,6 @@ textures:
     water:
       translucent: true
       texture: water_still
-#        state:
-#          still: water_still
     waterlily:
       texture: waterlily
     wet_sponge:
@@ -741,12 +717,8 @@ textures:
           - wheat_stage_5
           - wheat_stage_6
           - wheat_stage_7
-    white_concrete:
-      texture: hardened_clay_stained_white
     white_stained_glass:
       translucent: true
-    yellow_concrete:
-      texture: hardened_clay_stained_yellow
     yellow_stained_glass:
       translucent: true
     sandstone_wall:

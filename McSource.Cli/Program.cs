@@ -17,7 +17,7 @@ namespace McSource.Cli
     {
       // var path = @"C:\Users\Simon\Documents\Userdata\SourceCraft\schematics\dual.schem";
       // var path = @"C:\Users\Simon\Documents\Userdata\SourceCraft\schematics\axis.schem";
-      var path = @"C:\Users\Simon\Documents\Userdata\SourceCraft\schematics\ttt_kekland.schem";
+      var path = @"C:\Users\Simon\Documents\Userdata\SourceCraft\schematics\ttt_kekland_119.schem";
       // var path = @"C:\Users\Simon\Documents\Userdata\SourceCraft\schematics\cobble_glowstone.schem";
       // var path = @"C:\Users\Simon\Documents\Userdata\SourceCraft\schematics\cobble_glowstone_air.schem";
 

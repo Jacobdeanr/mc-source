@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using McSource.Extensions;
 using McSource.Logging;
 using McSource.Models.Nbt.BlockEntities;
 using McSource.Models.Nbt.Enums;
@@ -28,11 +29,14 @@ namespace McSource.Models.Nbt.Blocks.Abstract
       
         var sides = new List<Vmf.Side>();
         var opaqueNeighborCount = 0;
-        foreach (var (position, block) in neighbors)
+        
+        foreach (McDirection3D position in Enum.GetValues(typeof(McDirection3D)))
         {
-          if (block == null || block.Translucent)
+          var neighbor = neighbors.GetOrDefault(position);
+          
+          if (neighbor == null || neighbor.Translucent)
           {
-            // Draw face
+            // No or transparent neighbor => Draw face
             sides.Add(GetFace(position).ToModel(solid));
             continue;
           }
