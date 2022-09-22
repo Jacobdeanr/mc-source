@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using fNbt;
@@ -10,6 +11,7 @@ using McSource.Models.Nbt.Blocks.Abstract;
 using McSource.Models.Nbt.Enums;
 using McSource.Models.Nbt.Structs;
 using McSource.Models.Vmf;
+using VmfSharp;
 
 namespace McSource.Models.Nbt.Schematic
 {
@@ -18,53 +20,22 @@ namespace McSource.Models.Nbt.Schematic
   /// </summary>
   public class SpongeSchematic : Schematic<NbtCompound>
   {
-    private Dictionary<int, string> LoadPalette(NbtCompound rootTag)
-    {
-      return rootTag
-        .Get<NbtCompound>("Palette")!
-        .Tags
-        .Cast<NbtInt>()
-        .ToDictionary(tag => tag.Value, tag => tag.Name!);
-    }
-
-    private ICollection<BlockEntity> LoadBlockEntities(NbtCompound rootTag)
-    {
-      return rootTag
-        .Get<NbtList>("BlockEntities")!
-        .Select(tag => BlockEntity.FromTag((NbtCompound) tag))
-        .ToArray();
-    }
-
-    private byte[] LoadBlockData(NbtCompound rootTag)
-    {
-      return rootTag.Get<NbtByteArray>("BlockData")!.Value;
-    }
-
-
-    public static ISchematic? FromTag(NbtCompound rootTag, Config.Config config)
-    {
-      try
-      {
-        return new SpongeSchematic(config).Load(rootTag);
-      }
-      catch (NullReferenceException e)
-      {
-        Log.Error($"Could not read SpongeSchematic from {nameof(NbtCompound)}", e);
-        return default;
-      }
-    }
-
     public SpongeSchematic(Config.Config config) : base(config)
     {
     }
 
-
-    public override Map ToModel()
+    public SpongeSchematic(Config.Config config, NbtCompound rootTag) : base(config, rootTag)
     {
-      var map = new Map();
-      map.World = new World(map);
+    }
 
-      var solids = new List<Solid?>
+    /// <summary>
+    /// Creates a skybox around the schematic
+    /// </summary>
+    /// <param name="map"></param>
+    /// <returns></returns>
+    private ICollection<Solid> MakeSkyBox(IVmfRoot map)
+    {
+      return new[]
       {
         // Skybox: South
         new SkyboxBlock(this, new Coordinates(0, 0, -1), new Dimensions3D(Dimensions.DX, Dimensions.DY, 1)).ToModel(map),
@@ -81,102 +52,122 @@ namespace McSource.Models.Nbt.Schematic
         // Skybox: Bottom
         new SkyboxBlock(this, new Coordinates(0, -1, 0), new Dimensions3D(Dimensions.DX, 1, Dimensions.DZ)).ToModel(map),
       };
+    }
 
-      foreach (var block in Blocks)
+    private bool TryGroup(Block block, int x, int y, int z, McDirection3D direction, out BlockGroup? blockGroup)
+    {
+      var blocks = new List<Block>();
+      switch (direction)
       {
-        block.Prepare();
+        case McDirection3D.East:
+        case McDirection3D.West:
+          var tx = x;
+          while (this.TryGet(++tx, y, z, out var nextBlock) && nextBlock is {CanDraw: true, ParentBlockGroup: null} &&
+                 block.Equals(nextBlock))
+          {
+            blocks.Add(nextBlock);
+          }
+
+          break;
+        case McDirection3D.North:
+        case McDirection3D.South:
+          var tz = z;
+          while (this.TryGet(x, y, ++tz, out var nextBlock) && nextBlock is {CanDraw: true, ParentBlockGroup: null} &&
+                 block.Equals(nextBlock))
+          {
+            blocks.Add(nextBlock);
+          }
+
+          break;
+        case McDirection3D.Top:
+        case McDirection3D.Bottom:
+          var ty = y;
+          while (this.TryGet(x, ++ty, z, out var nextBlock) && nextBlock is {CanDraw: true, ParentBlockGroup: null} &&
+                 block.Equals(nextBlock))
+          {
+            blocks.Add(nextBlock);
+          }
+
+          break;
+        default:
+          throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
       }
 
+      if (!blocks.Any())
+      {
+        blockGroup = default;
+        return false;
+      }
+
+      blockGroup = new BlockGroup(direction, block, blocks.ToArray());
+      return blockGroup.CanDraw;
+    }
+
+    public override Map ToModel()
+    {
+      var map = new Map();
+      var solids = new List<Solid>();
+
       // todo inefficient
-      
+      // Try to group blocks into BlockGroups
       for (short z = 0; z < Dimensions.DZ; z++)
       for (short x = 0; x < Dimensions.DX; x++)
       for (short y = 0; y < Dimensions.DY; y++)
       {
-        if (TryGet(x, y, z, out var block) && block is {CanDraw: true, ParentBlockGroup: null})
+        if (!TryGet(x, y, z, out var block) || !(block is {CanDraw: true, ParentBlockGroup: null}))
         {
-            // Y
-          
-            var ty = y;
-            var yBlocks = new List<Block>();
-            while (TryGet(x, ++ty, z, out var nextBlock) && nextBlock is {CanDraw: true, ParentBlockGroup: null} && block.Equals(nextBlock))
-            {
-              yBlocks.Add(nextBlock);
-            }
+          continue;
+        }
 
-            if (yBlocks.Any())
-            {
-              var blockGroup = new BlockGroup(McDirection3D.Top, block, yBlocks.ToArray());
-              // Log.Info($"+Group: {blockGroup}");
-              solids.Add(blockGroup.ToModel(map));
-              continue;
-            }
+        if (TryGroup(block, x, y, z, McDirection3D.Top, out var yGroup) && yGroup != null)
+        {
+          solids.Add(yGroup.ToModel(map));
+          continue;
+        }
 
-            // X
-            
-            var tx = x;
-            var xBlocks = new List<Block>();
-            while (TryGet(++tx, y, z, out var nextBlock) && nextBlock is {CanDraw: true, ParentBlockGroup: null} && block.Equals(nextBlock))
-            {
-              xBlocks.Add(nextBlock);
-            }
+        if (TryGroup(block, x, y, z, McDirection3D.East, out var xGroup) && xGroup != null)
+        {
+          solids.Add(xGroup.ToModel(map));
+          continue;
+        }
 
-            if (xBlocks.Any())
-            {
-              var group = new BlockGroup(McDirection3D.East, block, xBlocks.ToArray());
-              // Log.Info($"+Group: {@group}");
-              solids.Add(@group.ToModel(map));
-              continue;
-            }
-
-            // Z
-            
-            var tz = z;
-            var zBlocks = new List<Block>();
-            while (TryGet(x, y, ++tz, out var nextBlock) && nextBlock is {CanDraw: true, ParentBlockGroup: null} && block.Equals(nextBlock))
-            {
-              zBlocks.Add(nextBlock);
-            }
-
-            if (zBlocks.Any())
-            {
-              var group = new BlockGroup(McDirection3D.North, block, zBlocks.ToArray());
-              // Log.Info($"+Group: {@group}");
-              solids.Add(@group.ToModel(map));
-              continue;
-            }
-
+        if (TryGroup(block, x, y, z, McDirection3D.North, out var zGroup) && zGroup != null)
+        {
+          solids.Add(zGroup.ToModel(map));
         }
       }
 
-      var t1 = solids.Count;
       Log.Info($"Grouped solids: {solids.Count}");
 
-      foreach (var block in Blocks)
-      {
-        if (block is {CanDraw: true, ParentBlockGroup: null})
-        {
-          // Log.Info($"+Single: {block}");
-          solids.Add(block.ToModel(map));
-        }
-      }
+      // Add remaining single blocks
+      var solidsSingle = (
+        from Block? block in Blocks
+        where block is {CanDraw: true, ParentBlockGroup: null}
+        select block.ToModel(map)
+      ).ToArray();
+      solids.AddRange(solidsSingle);
 
-      Log.Info($"Single Solids: {solids.Count - t1}");
+      Log.Info($"Single Solids: {solidsSingle.Length}");
 
-      map.World = new World(map)
-      {
-        Solids = solids
-      };
+      // Surround with skybox
+      var solidsSkyBox = MakeSkyBox(map);
+      solids.AddRange(solidsSkyBox);
+
+      Log.Info($"Skybox Solids: {solidsSkyBox.Count}");
+
+      // Assign solids to world and return the map object
       Log.Info($"Total Solids: {solids.Count}");
+      map.World = new World(map, solids);
       return map;
     }
 
     /// <summary>
-    /// Ported from <a href="https://github.com/SpongePowered/Sponge/blob/aa2c8c53b4f9f40297e6a4ee281bee4f4ce7707b/src/main/java/org/spongepowered/common/data/persistence/SchematicTranslator.java#L147-L175">here</a>
+    /// <para>Loads the schematic data from the provided <see cref="NbtCompound"/> root tag</para>
+    /// Ported from the Spongepowered <a href="https://github.com/SpongePowered/Sponge/blob/aa2c8c53b4f9f40297e6a4ee281bee4f4ce7707b/src/main/java/org/spongepowered/common/data/persistence/SchematicTranslator.java#L147-L175">SchematicTranslator</a>
     /// </summary>
     /// <param name="rootTag"></param>
     /// <exception cref="ArgumentException"></exception>
-    public override ISchematic Load(NbtCompound rootTag)
+    protected override void LoadFromSource(NbtCompound rootTag)
     {
       Dimensions = new Dimensions3D
       {
@@ -225,8 +216,34 @@ namespace McSource.Models.Nbt.Schematic
 
         index++;
       }
-
-      return this;
     }
+
+    #region Static Methods (NbtCompound)
+
+    // todo Move SpongeSchematic to dedicated project and convert these methods to extension methods
+
+    private static Dictionary<int, string> LoadPalette(NbtCompound rootTag)
+    {
+      return rootTag
+        .Get<NbtCompound>("Palette")!
+        .Tags
+        .Cast<NbtInt>()
+        .ToDictionary(tag => tag.Value, tag => tag.Name!);
+    }
+
+    private static ICollection<BlockEntity> LoadBlockEntities(NbtCompound rootTag)
+    {
+      return rootTag
+        .Get<NbtList>("BlockEntities")!
+        .Select(tag => BlockEntity.FromTag((NbtCompound) tag))
+        .ToArray();
+    }
+
+    private static byte[] LoadBlockData(NbtCompound rootTag)
+    {
+      return rootTag.Get<NbtByteArray>("BlockData")!.Value;
+    }
+
+    #endregion
   }
 }

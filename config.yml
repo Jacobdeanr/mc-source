@@ -343,6 +343,9 @@ textures:
               front: furnace_front_on
               side: furnace_side
               top: furnace_top
+    ladder:
+      translucent: true
+      texture: ladder
     granite:
       texture: stone_granite
     granite_slab:
@@ -354,10 +357,12 @@ textures:
             sides:
               side: grass_block_side
               top: grass_block_top
+              bottom: dirt
           snowy:
             sides:
               side: grass_block_side
               top: grass_block_snow
+              bottom: dirt
     grass_path:
       texture:
         sides:

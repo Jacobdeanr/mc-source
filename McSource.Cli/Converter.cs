@@ -27,7 +27,7 @@ namespace McSource.Cli
       {
         var nbtFile = new NbtFile();
         nbtFile.LoadFromFile(schematicPath);
-        schematic = SpongeSchematic.FromTag(nbtFile.RootTag, config);
+        schematic = new SpongeSchematic(config, nbtFile.RootTag);
       }
       catch (Exception e)
       {

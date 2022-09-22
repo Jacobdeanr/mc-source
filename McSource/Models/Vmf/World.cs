@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using McSource;
@@ -45,6 +46,10 @@ namespace McSource.Models.Vmf
 
     public World([NotNull] IVmfRoot root) : base(root)
     {
+    }
+    public World([NotNull] IVmfRoot root, ICollection<Solid> solids) : base(root)
+    {
+      Solids = solids;
     }
   }
 }

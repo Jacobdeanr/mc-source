@@ -27,7 +27,7 @@ namespace McSource.Models.Nbt.Blocks
     {
     }
 
-    public override Solid? ToModel(IVmfRoot root)
+    public override Solid ToModel(IVmfRoot root)
     {
       var solid = new Vmf.Solid(root);
       solid.Sides = Enum.GetValues(typeof(McDirection3D)).Cast<McDirection3D>().Select(pos => GetFace(pos).ToModel(solid)).ToArray();

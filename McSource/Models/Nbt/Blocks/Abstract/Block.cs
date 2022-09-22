@@ -20,7 +20,7 @@ namespace McSource.Models.Nbt.Blocks.Abstract
   public abstract class Block : IVmfModelConvertible<Vmf.Solid>, IEquatable<Block>
   {
     public virtual bool CanDraw => !IsEncased;
-    
+
     protected Config.Block? Config { get; }
 
     /// <summary>
@@ -73,20 +73,7 @@ namespace McSource.Models.Nbt.Blocks.Abstract
 
     public virtual void Prepare()
     {
-      int count = 0;
-      foreach (var neighbor in GetNeighbors().Values)
-      {
-        if (neighbor?.Translucent == false)
-        {
-          if (neighbor.Info.Id.Contains("water"))
-          {
-            
-          }
-          count++;
-        }
-      }
-
-      IsEncased =  count == 6;
+      IsEncased = GetNeighbors().Values.Count(neighbor => neighbor.IsOpaque()) == 6;
     }
 
     private static Config.Block? GetConfigEntry(Config.Config config, BlockInfo info)
@@ -167,14 +154,14 @@ namespace McSource.Models.Nbt.Blocks.Abstract
         case McDirection3D.South:
           Dimensions.DZ += (short) (Dimensions.DZ * amount);
           break;
-        case McDirection3D.Top: 
+        case McDirection3D.Top:
         case McDirection3D.Bottom:
           Dimensions.DX += (short) (Dimensions.DX * amount); // do not change
           break;
       }
     }
-      
-    public abstract Solid? ToModel(IVmfRoot root);
+
+    public abstract Solid ToModel(IVmfRoot root);
 
     public override string ToString()
     {

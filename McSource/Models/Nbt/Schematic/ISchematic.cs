@@ -17,6 +17,8 @@ namespace McSource.Models.Nbt.Schematic
     public Block? GetOrDefault(short x, short y, short z);
     public Block Get(short x, short y, short z);
     public bool TryGet(short x, short y, short z, out Block? block);
+    
+    public void OnLoaded();
 
     public Vmf.Map ToModel();
   }
