@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 using McSource.Extensions;
 using McSource.Logging;
 using McSource.Models.Config;
 using McSource.Models.Nbt.BlockEntities;
 using McSource.Models.Nbt.Enums;
+using McSource.Models.Nbt.Face;
 using McSource.Models.Nbt.Properties;
 using McSource.Models.Nbt.Schematic;
 using McSource.Models.Nbt.Structs;
@@ -17,16 +20,41 @@ using Side = McSource.Models.Config.Side;
 
 namespace McSource.Models.Nbt.Blocks.Abstract
 {
-  public abstract class Block : IVmfModelConvertible<Vmf.Solid>, IEquatable<Block>
+  /// <summary>
+  /// Minecraft Block data model
+  /// </summary>
+  public abstract class Block : IEquatable<Block>
   {
-    public virtual bool CanDraw => !IsEncased;
+    #region Properties
 
+    public McDirection3D Facing { get; private set; } = McDirection3D.North;
+    public string State { get; private set; } = "default";
+    public string Part { get; private set; } = "default";
+    public string Stage { get; private set; } = "default";
+
+#if DEBUG
+    public static ICollection<string> MissingTextures = new List<string>();
+#endif
+
+    /// <summary>
+    /// Reference to the parent block group this instance is attached to. Null if not part of a block group.
+    /// </summary>
+    public BlockGroup? ParentBlockGroup { get; set; }
+
+    /// <summary>
+    /// Indicates whether this block should be drawn
+    /// </summary>
+    public virtual bool CanDraw { get; protected set; }
+
+    /// <summary>
+    /// Block-specific configuration
+    /// </summary>
     protected Config.Block? Config { get; }
 
     /// <summary>
     /// Parent Schematic
     /// </summary>
-    public ISchematic Parent { get; set; }
+    public ISchematic Parent { get; }
 
     /// <summary>
     /// Block size
@@ -36,25 +64,31 @@ namespace McSource.Models.Nbt.Blocks.Abstract
     /// <summary>
     /// Determines whether this block is see-through
     /// </summary>
-    public bool Translucent { get; set; }
+    public bool Translucent { get; protected set; }
 
     /// <summary>
     /// Block Id
     /// </summary>
-    public BlockInfo Info { get; set; }
+    public BlockInfo Info { get; }
 
     /// <summary>
     /// The block location in minecraft
     /// </summary>
-    public Coordinates Coordinates { get; set; }
+    public Coordinates Coordinates { get; }
 
     /// <summary>
     /// Additional block data
     /// </summary>
-    public BlockEntity? BlockEntity { get; set; }
+    public BlockEntity? BlockEntity { get; }
 
-    protected Block(ISchematic parent,
-      BlockInfo info, Coordinates coordinates, Config.Block? config, BlockEntity? blockEntity = default)
+    #endregion
+
+    protected Block(
+      ISchematic parent,
+      BlockInfo info,
+      Coordinates coordinates,
+      Config.Block? config,
+      BlockEntity? blockEntity = default)
     {
       Parent = parent;
       Info = info;
@@ -69,11 +103,28 @@ namespace McSource.Models.Nbt.Blocks.Abstract
       }
     }
 
-    public bool IsEncased { get; set; }
-
     public virtual void Prepare()
     {
-      IsEncased = GetNeighbors().Values.Count(neighbor => neighbor.IsOpaque()) == 6;
+      CanDraw = GetNeighbors().Values.Count(neighbor => neighbor.IsOpaque()) != 6;
+    }
+
+    public void Extend(int amount, McDirection3D direction)
+    {
+      switch (direction)
+      {
+        case McDirection3D.East:
+        case McDirection3D.West:
+          Dimensions.DY += (short) (Dimensions.DY * amount);
+          break;
+        case McDirection3D.North:
+        case McDirection3D.South:
+          Dimensions.DZ += (short) (Dimensions.DZ * amount);
+          break;
+        case McDirection3D.Top:
+        case McDirection3D.Bottom:
+          Dimensions.DX += (short) (Dimensions.DX * amount); // do not change
+          break;
+      }
     }
 
     private static Config.Block? GetConfigEntry(Config.Config config, BlockInfo info)
@@ -83,13 +134,118 @@ namespace McSource.Models.Nbt.Blocks.Abstract
         return default;
       }
 
-      if (!ns.Blocks.TryGetValue(info.Id, out var block))
+      return !ns.Blocks.TryGetValue(info.Id, out var block)
+        ? default
+        : block;
+    }
+
+    public IDictionary<McDirection3D, Block?> GetNeighbors() =>
+      new Dictionary<McDirection3D, Block?>(6)
       {
-        return default;
+        [McDirection3D.East] = Parent.GetOrDefault(Coordinates.X - 1, Coordinates.Y, Coordinates.Z),
+        [McDirection3D.West] = Parent.GetOrDefault(Coordinates.X + 1, Coordinates.Y, Coordinates.Z),
+
+        [McDirection3D.Bottom] = Parent.GetOrDefault(Coordinates.X, Coordinates.Y - 1, Coordinates.Z),
+        [McDirection3D.Top] = Parent.GetOrDefault(Coordinates.X, Coordinates.Y + 1, Coordinates.Z),
+
+        [McDirection3D.South] = Parent.GetOrDefault(Coordinates.X, Coordinates.Y, Coordinates.Z + 1),
+        [McDirection3D.North] = Parent.GetOrDefault(Coordinates.X, Coordinates.Y, Coordinates.Z - 1)
+      };
+
+    protected string GetTexturePath(McDirection3D facePosition)
+    {
+      string? path = null;
+
+      if (Config?.Texture != null)
+      {
+        path = Facing switch
+        {
+          McDirection3D.East => facePosition switch
+          {
+            McDirection3D.East => Config.Texture.Get(Stage, State, Part, SidePosition.Front),
+            McDirection3D.West => Config.Texture.Get(Stage, State, Part, SidePosition.Back),
+            McDirection3D.North => Config.Texture.Get(Stage, State, Part, SidePosition.Left),
+            McDirection3D.South => Config.Texture.Get(Stage, State, Part, SidePosition.Right),
+            McDirection3D.Top => Config.Texture.Get(Stage, State, Part, SidePosition.Top),
+            McDirection3D.Bottom => Config.Texture.Get(Stage, State, Part, SidePosition.Bottom),
+            _ => path
+          },
+          McDirection3D.West => facePosition switch
+          {
+            McDirection3D.East => Config.Texture.Get(Stage, State, Part, SidePosition.Back),
+            McDirection3D.West => Config.Texture.Get(Stage, State, Part, SidePosition.Front),
+            McDirection3D.North => Config.Texture.Get(Stage, State, Part, SidePosition.Right),
+            McDirection3D.South => Config.Texture.Get(Stage, State, Part, SidePosition.Left),
+            McDirection3D.Top => Config.Texture.Get(Stage, State, Part, SidePosition.Top),
+            McDirection3D.Bottom => Config.Texture.Get(Stage, State, Part, SidePosition.Bottom),
+            _ => path
+          },
+          McDirection3D.North => facePosition switch
+          {
+            McDirection3D.East => Config.Texture.Get(Stage, State, Part, SidePosition.Right),
+            McDirection3D.West => Config.Texture.Get(Stage, State, Part, SidePosition.Left),
+            McDirection3D.North => Config.Texture.Get(Stage, State, Part, SidePosition.Front),
+            McDirection3D.South => Config.Texture.Get(Stage, State, Part, SidePosition.Back),
+            McDirection3D.Top => Config.Texture.Get(Stage, State, Part, SidePosition.Top),
+            McDirection3D.Bottom => Config.Texture.Get(Stage, State, Part, SidePosition.Bottom),
+            _ => path
+          },
+          McDirection3D.South => facePosition switch
+          {
+            McDirection3D.East => Config.Texture.Get(Stage, State, Part, SidePosition.Left),
+            McDirection3D.West => Config.Texture.Get(Stage, State, Part, SidePosition.Right),
+            McDirection3D.North => Config.Texture.Get(Stage, State, Part, SidePosition.Back),
+            McDirection3D.South => Config.Texture.Get(Stage, State, Part, SidePosition.Front),
+            McDirection3D.Top => Config.Texture.Get(Stage, State, Part, SidePosition.Top),
+            McDirection3D.Bottom => Config.Texture.Get(Stage, State, Part, SidePosition.Bottom),
+            _ => path
+          },
+          McDirection3D.Top => facePosition switch
+          {
+            McDirection3D.East => Config.Texture.Get(Stage, State, Part, SidePosition.Right),
+            McDirection3D.West => Config.Texture.Get(Stage, State, Part, SidePosition.Left),
+            McDirection3D.North => Config.Texture.Get(Stage, State, Part, SidePosition.Bottom),
+            McDirection3D.South => Config.Texture.Get(Stage, State, Part, SidePosition.Top),
+            McDirection3D.Top => Config.Texture.Get(Stage, State, Part, SidePosition.Front),
+            McDirection3D.Bottom => Config.Texture.Get(Stage, State, Part, SidePosition.Back),
+            _ => path
+          },
+          McDirection3D.Bottom => facePosition switch
+          {
+            McDirection3D.East => Config.Texture.Get(Stage, State, Part, SidePosition.Left),
+            McDirection3D.West => Config.Texture.Get(Stage, State, Part, SidePosition.Right),
+            McDirection3D.North => Config.Texture.Get(Stage, State, Part, SidePosition.Top),
+            McDirection3D.South => Config.Texture.Get(Stage, State, Part, SidePosition.Bottom),
+            McDirection3D.Top => Config.Texture.Get(Stage, State, Part, SidePosition.Back),
+            McDirection3D.Bottom => Config.Texture.Get(Stage, State, Part, SidePosition.Front),
+            _ => path
+          },
+          _ => path
+        };
       }
 
-      return block;
+      return path == null
+        ? Info.ToPath()
+        : $"{Info.Namespace}/{path}";
     }
+
+
+    protected virtual Face.Face GetFace(McDirection3D pos)
+    {
+      var path = GetTexturePath(pos);
+
+#if DEBUG
+      var fullPath = @"C:\Program Files (x86)\Steam\steamapps\common\GarrysMod\garrysmod\materials\" + path.Replace("/", "\\");
+      if (!File.Exists(fullPath + ".vmt") || !File.Exists(fullPath + ".vtf"))
+      {
+        MissingTextures.Add(path);
+      }
+#endif
+
+      return new SolidFace(this, pos, path);
+    }
+
+    #region Static Methods
 
     [SuppressMessage("ReSharper", "RedundantCaseLabel")]
     public static Block Create(ISchematic parent,
@@ -114,59 +270,43 @@ namespace McSource.Models.Nbt.Blocks.Abstract
         case BlockType.Stairs:
         case BlockType.Torch:
         case BlockType.Trapdoor:
-          Log.Warning($"{nameof(BlockType)} '{config.Type}' is not implemented. Using {nameof(SolidBlock)} instead");
-          break;
+          Log.Warning($"{nameof(BlockType)} '{config.Type}' has no specific implementation. Using {nameof(DetailBlock)} instead");
+          return new DetailBlock(parent, blockInfo, coordinates, config, blockEntity);
         case BlockType.Ignored:
           return new IgnoredBlock(parent, blockInfo, coordinates, blockEntity);
         default:
         case BlockType.Block:
-          // Use fallback method return
+          // Use method return as fallback
           break;
       }
 
       return new SolidBlock(parent, blockInfo, coordinates, config, blockEntity);
     }
 
-    public IDictionary<McDirection3D, Block?> GetNeighbors() =>
-      new Dictionary<McDirection3D, Block?>(6)
-      {
-        [McDirection3D.East] = Parent.GetOrDefault(Coordinates.X - 1, Coordinates.Y, Coordinates.Z),
-        [McDirection3D.West] = Parent.GetOrDefault(Coordinates.X + 1, Coordinates.Y, Coordinates.Z),
-
-        [McDirection3D.Bottom] = Parent.GetOrDefault(Coordinates.X, Coordinates.Y - 1, Coordinates.Z),
-        [McDirection3D.Top] = Parent.GetOrDefault(Coordinates.X, Coordinates.Y + 1, Coordinates.Z),
-
-        [McDirection3D.South] = Parent.GetOrDefault(Coordinates.X, Coordinates.Y, Coordinates.Z + 1),
-        [McDirection3D.North] = Parent.GetOrDefault(Coordinates.X, Coordinates.Y, Coordinates.Z - 1)
-      };
-
-    public BlockGroup? ParentBlockGroup { get; set; }
-
-    public void Extend(int amount, McDirection3D direction)
+    protected virtual IEnumerable<Vmf.Side> GetSolidSides(Vmf.Solid solid)
     {
-      switch (direction)
-      {
-        case McDirection3D.East:
-        case McDirection3D.West:
-          Dimensions.DY += (short) (Dimensions.DY * amount);
-          break;
-        case McDirection3D.North:
-        case McDirection3D.South:
-          Dimensions.DZ += (short) (Dimensions.DZ * amount);
-          break;
-        case McDirection3D.Top:
-        case McDirection3D.Bottom:
-          Dimensions.DX += (short) (Dimensions.DX * amount); // do not change
-          break;
-      }
+      return Enum.GetValues(typeof(McDirection3D))
+        .Cast<McDirection3D>()
+        .Select(d => GetFace(d).ToModel(solid));
     }
 
-    public abstract Solid ToModel(IVmfRoot root);
-
-    public override string ToString()
+    protected Vmf.Solid GetSolid(IVmfRoot root)
     {
-      return $"{Coordinates}: '{Info}'";
+      var solid = new Vmf.Solid(root);
+      solid.Sides = GetSolidSides(solid).ToArray();
+      solid.Editor = Editor.Default(solid);
+      return solid;
     }
+
+    #endregion
+
+    #region Serialization
+
+    public override string ToString() => $"{Coordinates}: '{Info}'";
+
+    #endregion
+
+    #region IEquatable
 
     public bool Equals(Block? other)
     {
@@ -207,5 +347,7 @@ namespace McSource.Models.Nbt.Blocks.Abstract
     {
       return HashCode.Combine(Info, BlockEntity);
     }
+
+    #endregion
   }
 }

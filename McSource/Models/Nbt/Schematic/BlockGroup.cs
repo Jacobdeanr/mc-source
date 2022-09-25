@@ -9,20 +9,20 @@ namespace McSource.Models.Nbt.Schematic
   public class BlockGroup : IVmfModelConvertible<Solid>
   {
     public McDirection3D Direction { get; set; }
-    private Block _start;
-    private Block? _end;
+    private SolidBlock _start;
+    private SolidBlock? _end;
 
     public int Length { get; private set; } = 1;
     public bool CanDraw { get; private set; } = true;
 
-    private Block ReferenceBlock(Block block)
+    private SolidBlock ReferenceBlock(SolidBlock block)
     {
       block.ParentBlockGroup = this;
       CanDraw &= block.CanDraw;
       return block;
     }
     
-    public void Add(params Block[] blocks)
+    public void Add(params SolidBlock[] blocks)
     {
       foreach (var block in blocks)
       {
@@ -31,12 +31,12 @@ namespace McSource.Models.Nbt.Schematic
       }
     }
 
-    public BlockGroup(McDirection3D direction, Block start, params Block[] end) : this(direction, start)
+    public BlockGroup(McDirection3D direction, SolidBlock start, params SolidBlock[] end) : this(direction, start)
     {
       Add(end);
     }
     
-    public BlockGroup(McDirection3D direction, Block start)
+    public BlockGroup(McDirection3D direction, SolidBlock start)
     {
       Direction = direction;
 

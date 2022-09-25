@@ -54,38 +54,38 @@ namespace McSource.Models.Nbt.Schematic
       };
     }
 
-    private bool TryGroup(Block block, int x, int y, int z, McDirection3D direction, out BlockGroup? blockGroup)
+    private bool TryGroup(SolidBlock block, int x, int y, int z, McDirection3D direction, out BlockGroup? blockGroup)
     {
-      var blocks = new List<Block>();
+      var blocks = new List<SolidBlock>();
       switch (direction)
       {
         case McDirection3D.East:
         case McDirection3D.West:
           var tx = x;
-          while (this.TryGet(++tx, y, z, out var nextBlock) && nextBlock is {CanDraw: true, ParentBlockGroup: null} &&
+          while (this.TryGet(++tx, y, z, out var nextBlock) && nextBlock.IsUngroupedDrawable<SolidBlock>(out var solidBlock) &&
                  block.Equals(nextBlock))
           {
-            blocks.Add(nextBlock);
+            blocks.Add(solidBlock);
           }
 
           break;
         case McDirection3D.North:
         case McDirection3D.South:
           var tz = z;
-          while (this.TryGet(x, y, ++tz, out var nextBlock) && nextBlock is {CanDraw: true, ParentBlockGroup: null} &&
+          while (this.TryGet(x, y, ++tz, out var nextBlock) && nextBlock.IsUngroupedDrawable<SolidBlock>(out var solidBlock) &&
                  block.Equals(nextBlock))
           {
-            blocks.Add(nextBlock);
+            blocks.Add(solidBlock);
           }
 
           break;
         case McDirection3D.Top:
         case McDirection3D.Bottom:
           var ty = y;
-          while (this.TryGet(x, ++ty, z, out var nextBlock) && nextBlock is {CanDraw: true, ParentBlockGroup: null} &&
+          while (this.TryGet(x, ++ty, z, out var nextBlock) && nextBlock.IsUngroupedDrawable<SolidBlock>(out var solidBlock) &&
                  block.Equals(nextBlock))
           {
-            blocks.Add(nextBlock);
+            blocks.Add(solidBlock);
           }
 
           break;
@@ -107,6 +107,7 @@ namespace McSource.Models.Nbt.Schematic
     {
       var map = new Map();
       var solids = new List<Solid>();
+      var entities = new List<Entity>();
 
       // todo inefficient
       // Try to group blocks into BlockGroups
@@ -114,49 +115,68 @@ namespace McSource.Models.Nbt.Schematic
       for (short x = 0; x < Dimensions.DX; x++)
       for (short y = 0; y < Dimensions.DY; y++)
       {
-        if (!TryGet(x, y, z, out var block) || !(block is {CanDraw: true, ParentBlockGroup: null}))
+        if (!TryGet(x, y, z, out var block) || !block.IsUngroupedDrawable<SolidBlock>(out var solidBlock))
         {
           continue;
         }
 
-        if (TryGroup(block, x, y, z, McDirection3D.Top, out var yGroup) && yGroup != null)
+        if (TryGroup(solidBlock, x, y, z, McDirection3D.Top, out var yGroup) && yGroup != null)
         {
           solids.Add(yGroup.ToModel(map));
           continue;
         }
 
-        if (TryGroup(block, x, y, z, McDirection3D.East, out var xGroup) && xGroup != null)
+        if (TryGroup(solidBlock, x, y, z, McDirection3D.East, out var xGroup) && xGroup != null)
         {
           solids.Add(xGroup.ToModel(map));
           continue;
         }
 
-        if (TryGroup(block, x, y, z, McDirection3D.North, out var zGroup) && zGroup != null)
+        if (TryGroup(solidBlock, x, y, z, McDirection3D.North, out var zGroup) && zGroup != null)
         {
           solids.Add(zGroup.ToModel(map));
         }
       }
 
-      Log.Info($"Grouped solids: {solids.Count}");
+      Log.Info("Solids (grouped):".PadRight(20) + solids.Count.ToString().PadLeft(5));
 
-      // Add remaining single blocks
-      var solidsSingle = (
-        from Block? block in Blocks
-        where block is {CanDraw: true, ParentBlockGroup: null}
-        select block.ToModel(map)
-      ).ToArray();
-      solids.AddRange(solidsSingle);
+      var ungroupedCount = 0;
+      foreach (var block in Blocks)
+      {
+        if (!block.IsUngroupedDrawable())
+        {
+          continue;
+        }
 
-      Log.Info($"Single Solids: {solidsSingle.Length}");
+        switch (block)
+        {
+          case SolidBlock solidBlock:
+            // Add remaining ungrouped blocks to solids
+            ungroupedCount++;
+            solids.Add(solidBlock.ToModel(map));
+            continue;
+          case DetailBlock entityBlock:
+            // Add entities to map
+            entities.Add(entityBlock.ToModel(map));
+            continue;
+          default:
+            Log.Error($"Failed to add block-type '{block.GetType().Name}' to map");
+            break;
+        }
+      }
+      
+      Log.Info("Solids (ungrouped):".PadRight(20) + ungroupedCount.ToString().PadLeft(5));
 
       // Surround with skybox
       var solidsSkyBox = MakeSkyBox(map);
       solids.AddRange(solidsSkyBox);
+      Log.Info("Solids (skybox):".PadRight(20) + solidsSkyBox.Count.ToString().PadLeft(5));
+      
+      Log.Info("Solids (total):".PadRight(20) + solids.Count.ToString().PadLeft(5));
+      Log.Info("Entities (total):".PadRight(20) + map.Entities.Count.ToString().PadLeft(5));
 
-      Log.Info($"Skybox Solids: {solidsSkyBox.Count}");
-
-      // Assign solids to world and return the map object
-      Log.Info($"Total Solids: {solids.Count}");
+      // Assign to world and return map
+      map.Entities = entities;
       map.World = new World(map, solids);
       return map;
     }

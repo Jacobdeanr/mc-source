@@ -1,5 +1,4 @@
-﻿
-using McSource.Models.Nbt.Blocks.Abstract;
+﻿using McSource.Models.Nbt.Blocks.Abstract;
 
 namespace McSource.Extensions
 {
@@ -13,6 +12,24 @@ namespace McSource.Extensions
     public static bool IsOpaque(this Block? self)
     {
       return !(self is {Translucent: true});
+    }
+
+    public static bool IsUngroupedDrawable(this Block? self)
+    {
+      return self is {ParentBlockGroup: null, CanDraw: true};
+    }
+
+    public static bool IsUngroupedDrawable<T>(this Block? self, out T block) where T : Block
+    {
+      switch (self)
+      {
+        case T castBlock:
+          block = castBlock;
+          return castBlock.IsUngroupedDrawable();
+        default:
+          block = default!;
+          return false;
+      }
     }
   }
 }

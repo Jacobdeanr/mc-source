@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using McSource.Logging;
-using McSource.Models.Nbt.Blocks;
+using McSource.Models.Nbt.Blocks.Abstract;
 
 namespace McSource.Cli
 {
@@ -38,7 +38,7 @@ namespace McSource.Cli
       Log.Info($"The conversion process took {(int)stopwatch.Elapsed.TotalMinutes:D2}min {stopwatch.Elapsed.Seconds:D2}s to complete.");
 
 #if DEBUG
-      foreach (var m in SolidBlock.Missing.Distinct())
+      foreach (var m in SolidBlock.MissingTextures.Distinct())
       {
         Log.Warning($"Texture file does not exist: '{m}'");
       }
