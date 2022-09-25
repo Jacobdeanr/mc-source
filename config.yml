@@ -3,19 +3,22 @@ materialsPath: "C\\:\\Program Files (x86)\\Steam\\steamapps\\common\\GarrysMod\\
 textures:
   minecraft:
     glass_pane:
+      type: pane
       texture: glass
     air:
       type: ignored
     acacia_door:
-      type: block
+      type: door
       translucent: false
       texture:
         parts:
           bottom: acacia_door_bottom
           top: acacia_door_top
     acacia_fence:
+      type: fence
       texture: acacia_planks
     acacia_fence_gate:
+      type: fencegate
       texture: acacia_planks
     acacia_leaves:
       translucent: true
@@ -28,6 +31,7 @@ textures:
     acacia_sapling:
       texture: sapling_acacia
     acacia_slab:
+      type: slab
       texture: acacia_planks
     activator_rail:
       texture:
@@ -38,6 +42,7 @@ textures:
     andesite:
       texture: stone_andesite
     andesite_slab:
+      type: slab
       texture: stone_andesite
     anvil:
       texture:
@@ -72,13 +77,16 @@ textures:
           - beetroots_stage_2
           - beetroots_stage_3
     birch_door:
+      type: door
       texture:
         parts:
           bottom: birch_door_bottom
           top: birch_door_top
     birch_fence:
+      type: fence
       texture: birch_planks
     birch_fence_gate:
+      type: fencegate
       texture: birch_planks
     birch_leaves:
       translucent: true
@@ -91,6 +99,7 @@ textures:
     birch_sapling:
       texture: sapling_birch
     birch_slab:
+      type: slab
       texture: birch_planks
     glass_block:
       translucent: true
@@ -160,8 +169,10 @@ textures:
           sides: quartz_block_chiseled
           top: quartz_block_chiseled_top
     cut_sandstone_slab:
+      type: slab
       texture: cut_sandstone
     chiseled_red_sandstone_slab:
+      type: slab
       texture:
         sides:
           bottom: red_sandstone_bottom
@@ -174,6 +185,7 @@ textures:
           sides: sandstone_carved
           top: sandstone_top
     chiseled_standstone_slab:
+      type: slab
       texture:
         sides:
           bottom: sandstone_bottom
@@ -182,6 +194,7 @@ textures:
     chiseled_stone_bricks:
       texture: stonebrick_carved
     chiseled_stone_bricks_slab:
+      type: slab
       texture: stonebrick_carved
     chorus_flower:
       texture:
@@ -216,6 +229,7 @@ textures:
     cracked_stone_bricks:
       texture: stonebrick_cracked
     cracked_stone_bricks_slab:
+      type: slab
       texture: stonebrick_cracked
     crafting_table:
       texture:
@@ -224,22 +238,27 @@ textures:
           side: crafting_table_side
           top: crafting_table_top
     oak_stairs:
+      type: stairs
       texture: oak_planks
     cyan_stained_glass:
       translucent: true
     dark_oak_door:
+      type: door
       texture:
         parts:
           bottom: dark_oak_door_bottom
           top: dark_oak_door_top
     oak_door:
+      type: door
       texture:
         parts:
           bottom: oak_door_bottom
           top: oak_door_top
     dark_oak_fence:
+      type: fence
       texture: dark_oak_planks
     dark_oak_fence_gate:
+      type: fencegate
       texture: dark_oak_planks
     dark_oak_leaves:
       translucent: true
@@ -252,10 +271,13 @@ textures:
     oak_button:
       texture: oak_planks
     oak_sign:
+      type: sign
       texture: oak_planks
     oak_wall_sign:
+      type: sign
       texture: oak_planks
     dark_oak_slab:
+      type: slab
       texture: dark_oak_planks
     dark_prismarine:
       texture: prismarine_dark
@@ -278,6 +300,7 @@ textures:
     diorite:
       texture: stone_diorite
     diorite_slab:
+      type: slab
       texture: stone_diorite
     dispenser:
       texture:
@@ -311,6 +334,7 @@ textures:
     end_stone_bricks:
       texture: end_bricks
     end_stone_bricks_slab:
+      type: slab
       texture: end_bricks
     farmland:
       texture:
@@ -344,11 +368,12 @@ textures:
               side: furnace_side
               top: furnace_top
     ladder:
-      translucent: true
+      type: ladder
       texture: ladder
     granite:
       texture: stone_granite
     granite_slab:
+      type: slab
       texture: stone_granite
     grass_block:
       texture:
@@ -383,8 +408,8 @@ textures:
           inside: hopper_inside
           outside: hopper_outside
           top: hopper_top
-
     iron_door:
+      type: door
       texture:
         parts:
           bottom: iron_door_bottom
@@ -400,8 +425,10 @@ textures:
           bottom: jungle_door_bottom
           top: jungle_door_top
     jungle_fence:
+      type: fence
       texture: jungle_planks
     jungle_fence_gate:
+      type: fencegate
       texture: jungle_planks
     jungle_leaves:
       translucent: true
@@ -414,6 +441,7 @@ textures:
     jungle_sapling:
       texture: sapling_jungle
     jungle_slab:
+      type: slab
       texture: jungle_planks
     bell: 
       texture: bell_side # todo
@@ -440,6 +468,7 @@ textures:
     mossy_stone_bricks:
       texture: stonebrick_mossy
     mossy_stone_bricks_slab:
+      type: slab
       texture: stonebrick_mossy
     mycelium:
       texture:
@@ -449,6 +478,7 @@ textures:
     nether_bricks:
       texture: nether_brick
     nether_bricks_slab:
+      type: slab
       texture: nether_brick
     nether_portal:
       texture: portal
@@ -463,8 +493,10 @@ textures:
     note_block:
       texture: noteblock
     oak_fence:
+      type: fence
       texture: oak_planks
     oak_fence_gate:
+      type: fencegate
       texture: oak_planks
     oak_leaves:
       translucent: true
@@ -477,6 +509,7 @@ textures:
     oak_sapling:
       texture: sapling_oak
     oak_slab:
+      type: slab
       texture: oak_planks
     orange_stained_glass:
       translucent: true
@@ -491,14 +524,17 @@ textures:
     polished_andesite:
       texture: stone_andesite_smooth
     polished_andesite_slab:
+      type: slab
       texture: stone_andesite_smooth
     polished_diorite:
       texture: stone_diorite_smooth
     polished_diorite_slab:
+      type: slab
       texture: stone_diorite_smooth
     polished_granite:
       texture: stone_granite_smooth
     polished_granite_slab:
+      type: slab
       texture: stone_granite_smooth
     potatoes:
       translucent: true
@@ -518,7 +554,8 @@ textures:
       texture: prismarine_rough
     purple_stained_glass:
       translucent: true
-    purpur_stairs: 
+    purpur_stairs:
+      type: stairs
       texture: purpur_block
     purpur_pillar:
       texture:
@@ -526,6 +563,7 @@ textures:
           side: purpur_pillar
           top: purpur_pillar_top
     quartz_slab:
+      type: slab
       texture:
         sides:
           bottom: quartz_block_bottom
@@ -553,6 +591,7 @@ textures:
     red_nether_bricks:
       texture: red_nether_brick
     red_nether_bricks_slab:
+      type: slab
       texture: red_nether_brick
     red_sandstone:
       texture:
@@ -561,6 +600,7 @@ textures:
           sides: red_sandstone
           top: red_sandstone_top
     red_sandstone_slab:
+      type: slab
       texture:
         sides:
           bottom: red_sandstone_bottom
@@ -575,6 +615,7 @@ textures:
           default: redstone_lamp_off
           on: redstone_lamp_on
     redstone_torch:
+      type: torch
       texture:
         states:
           default: redstone_torch_off
@@ -593,6 +634,7 @@ textures:
           sides: sandstone
           top: sandstone_top
     sandstone_slab:
+      type: slab
       texture:
         sides:
           bottom: sandstone_bottom
@@ -607,6 +649,7 @@ textures:
     smooth_stone:
       texture: smooth_stone
     smooth_stone_slab:
+      type: slab
       texture: 
         sides:
           side: stone_slab_side
@@ -618,6 +661,7 @@ textures:
           sides: cut_sandstone
           top: sandstone_top
     smooth_sandstone_slab:
+      type: slab
       texture:
         sides:
           bottom: sandstone_bottom
@@ -630,6 +674,7 @@ textures:
           sides: cut_red_sandstone
           top: red_sandstone_top
     smooth_red_sandstone_slab:
+      type: slab
       texture:
         sides:
           bottom: red_sandstone_bottom
@@ -638,13 +683,16 @@ textures:
     spawner:
       texture: mob_spawner
     spruce_door:
+      type: door
       texture:
         parts:
           bottom: spruce_door_bottom
           top: spruce_door_top
     spruce_fence:
+      type: fence
       texture: spruce_planks
     spruce_fence_gate:
+      type: fencegate
       texture: spruce_planks
     spruce_leaves:
       translucent: true
@@ -657,12 +705,16 @@ textures:
     spruce_sapling:
       texture: sapling_spruce
     spruce_slab:
+      type: slab
       texture: spruce_planks
     stone_brick_stairs:
+      type: stairs
       texture: stone_bricks
     stone_bricks_slab:
+      type: slab
       texture: stone_bricks
     stone_slab:
+      type: slab
       texture: stone
         
     structure_block:
@@ -684,12 +736,13 @@ textures:
           side: tnt_side
           top: tnt_top
     wall_torch:
-      translucent: true
+      type: torch
       texture: torch
     torch:
-      translucent: true
+      type: torch
       texture: torch
     trapdoor:
+      type: trapdoor
       translucent: true
       texture: trapdoor
     #  tripwire:
@@ -733,6 +786,7 @@ textures:
           sides: sandstone
           top: sandstone_top
     sandstone_stairs:
+      type: stairs
       texture:
         sides:
           bottom: sandstone_bottom
