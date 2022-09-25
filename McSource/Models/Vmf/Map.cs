@@ -21,7 +21,7 @@ namespace McSource.Models.Vmf
     public World World { get; set; }
     public Cordon Cordon { get; set; }
 
-    public ICollection<IVmfSerializable> Entities { get; set; } = Array.Empty<IVmfSerializable>();
+    public ICollection<Entity> Entities { get; set; } = Array.Empty<Entity>();
 
     public Map()
     {

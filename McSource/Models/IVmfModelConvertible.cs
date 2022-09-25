@@ -6,6 +6,6 @@ namespace McSource.Models
 {
   public interface IVmfModelConvertible<TModel> where TModel : VmfModel
   {
-    public TModel? ToModel(IVmfRoot root);
+    public TModel ToModel(IVmfRoot root);
   }
 }

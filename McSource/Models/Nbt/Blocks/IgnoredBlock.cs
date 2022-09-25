@@ -11,7 +11,7 @@ namespace McSource.Models.Nbt.Blocks
 {
   public class IgnoredBlock : Block
   {
-    public override bool CanDraw { get; } = false;
+    public override bool CanDraw { get; protected set; } = false;
 
     public IgnoredBlock(ISchematic parent, BlockInfo info, Coordinates coordinates, BlockEntity? blockEntity = default)
       : base(parent, info, coordinates, null, blockEntity)
@@ -23,7 +23,7 @@ namespace McSource.Models.Nbt.Blocks
     {
     }
 
-    public override Solid? ToModel(IVmfRoot root)
+    public Solid ToModel(IVmfRoot root)
     {
       throw new NotImplementedException($"{nameof(IgnoredBlock)}s can not be converted to Models");
     }

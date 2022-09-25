@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using fNbt;
 using McSource.Logging;
 using McSource.Models.Nbt.Blocks.Abstract;
@@ -12,8 +13,6 @@ namespace McSource.Models.Nbt.Schematic
     public Block[,,] Blocks { get; protected set; }
     public Coordinates Offset { get; protected set; }
     public Dimensions3D Dimensions { get; protected set; }
-    
-    
 
     protected Schematic(Config.Config config)
     {

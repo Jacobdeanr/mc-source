@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using McSource.Models.Nbt.BlockEntities;
 using McSource.Models.Nbt.Blocks.Abstract;
 using McSource.Models.Nbt.Enums;
 using McSource.Models.Nbt.Face;
@@ -13,11 +11,13 @@ using VmfSharp;
 
 namespace McSource.Models.Nbt.Blocks
 {
-  public class SkyboxBlock : TexturedBlock
+  public class SkyboxBlock : SolidBlock
   {
     private static readonly BlockInfo BlockInfo = new BlockInfo("tools", "toolsskybox");
+    private static readonly string MaterialPath = BlockInfo.ToPath();
 
-    public SkyboxBlock([NotNull] ISchematic parent, Coordinates coordinates, Dimensions3D dimensions) : base(parent, BlockInfo, coordinates, null)
+    public SkyboxBlock([NotNull] ISchematic parent, Coordinates coordinates, Dimensions3D dimensions) : base(parent, BlockInfo, coordinates,
+      null)
     {
       Translucent = true;
       Dimensions = dimensions;
@@ -42,7 +42,7 @@ namespace McSource.Models.Nbt.Blocks
 
     protected override Face.Face GetFace(McDirection3D pos)
     {
-      return new SolidFace(this, pos, BlockInfo.ToPath());
+      return new SolidFace(this, pos, MaterialPath);
     }
   }
 }
