@@ -393,6 +393,7 @@ textures:
         sides:
           side: grass_path_side
           top: grass_path_top
+          bottom: dirt
     gray_stained_glass:
       translucent: true
     green_stained_glass:
