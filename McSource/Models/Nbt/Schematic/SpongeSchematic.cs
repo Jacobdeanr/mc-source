@@ -62,8 +62,9 @@ namespace McSource.Models.Nbt.Schematic
         case McDirection3D.East:
         case McDirection3D.West:
           var tx = x;
-          while (this.TryGet(++tx, y, z, out var nextBlock) && nextBlock.IsUngroupedDrawable<SolidBlock>(out var solidBlock) &&
-                 block.Equals(nextBlock))
+          while (this.TryGet(++tx, y, z, out var nextBlock) 
+                 && nextBlock.IsUngroupedDrawable<SolidBlock>(out var solidBlock) 
+                 && block.Equals(nextBlock))
           {
             blocks.Add(solidBlock);
           }
@@ -72,8 +73,9 @@ namespace McSource.Models.Nbt.Schematic
         case McDirection3D.North:
         case McDirection3D.South:
           var tz = z;
-          while (this.TryGet(x, y, ++tz, out var nextBlock) && nextBlock.IsUngroupedDrawable<SolidBlock>(out var solidBlock) &&
-                 block.Equals(nextBlock))
+          while (this.TryGet(x, y, ++tz, out var nextBlock) 
+                 && nextBlock.IsUngroupedDrawable<SolidBlock>(out var solidBlock) 
+                 && block.Equals(nextBlock))
           {
             blocks.Add(solidBlock);
           }
@@ -82,8 +84,9 @@ namespace McSource.Models.Nbt.Schematic
         case McDirection3D.Top:
         case McDirection3D.Bottom:
           var ty = y;
-          while (this.TryGet(x, ++ty, z, out var nextBlock) && nextBlock.IsUngroupedDrawable<SolidBlock>(out var solidBlock) &&
-                 block.Equals(nextBlock))
+          while (this.TryGet(x, ++ty, z, out var nextBlock) 
+                 && nextBlock.IsUngroupedDrawable<SolidBlock>(out var solidBlock) 
+                 && block.Equals(nextBlock))
           {
             blocks.Add(solidBlock);
           }

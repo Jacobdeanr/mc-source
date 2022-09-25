@@ -25,6 +25,7 @@ namespace McSource.Models.Nbt.Blocks.Abstract
     {
       var entity = new Vmf.Entity(root) {ClassName = "func_detail"};
       entity.Solid = GetSolid(entity);
+      entity.Editor = Editor.Default(entity);
       return entity;
     }
   }

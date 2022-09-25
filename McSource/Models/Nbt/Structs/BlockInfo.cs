@@ -68,7 +68,7 @@ namespace McSource.Models.Nbt.Structs
         return true;
       }
 
-      return Id == other.Id && Namespace == other.Namespace && Properties.Equals(other.Properties);
+      return Id == other.Id && Namespace == other.Namespace && Properties.SequenceEqual(other.Properties);
     }
 
     public override bool Equals(object? obj)

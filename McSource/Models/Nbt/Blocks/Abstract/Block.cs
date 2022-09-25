@@ -270,7 +270,6 @@ namespace McSource.Models.Nbt.Blocks.Abstract
         case BlockType.Stairs:
         case BlockType.Torch:
         case BlockType.Trapdoor:
-          Log.Warning($"{nameof(BlockType)} '{config.Type}' has no specific implementation. Using {nameof(DetailBlock)} instead");
           return new DetailBlock(parent, blockInfo, coordinates, config, blockEntity);
         case BlockType.Ignored:
           return new IgnoredBlock(parent, blockInfo, coordinates, blockEntity);
