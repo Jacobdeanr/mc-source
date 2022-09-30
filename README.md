@@ -15,7 +15,7 @@ Mc-Source is a tool capable of converting Minecraft structures to Source-compati
 
 4. Open the output `.vmf`-file in Hammer Editor, where the map can be compiled by pressing &lt;F9&gt;.
 
-Mc-Source has support for custom textures and adding new blocks, even for mods. More information can be found [here](./Configuration.md). 
+Mc-Source has support for custom textures and adding new blocks, even for mods. More information can be found [here](./McSource.Models.Config/README.md). 
 
 ## :hammer: Options
 
@@ -25,7 +25,7 @@ Mc-Source can be run with multiple command line arguments:
 |-|-|-|-|
 |||||
 
-Persistent configuration, specifically regarding block textures, can be found in the [Configuration.md](./Configuration.md) file.
+Persistent configuration, specifically regarding block textures, can be found in the [Configuration README](./McSource.Models.Config/README.md) file.
 
 
 ## :bookmark: Supported formats
