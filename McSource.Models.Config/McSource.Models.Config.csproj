@@ -6,8 +6,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\libs\fNbt\fNbt\fNbt.csproj" />
-      <ProjectReference Include="..\libs\vmfSharp\VmfSharp\VmfSharp.csproj" />
+      <ProjectReference Include="..\McSource.Common\McSource.Common.csproj" />
+      <ProjectReference Include="..\McSource.Logging\McSource.Logging.csproj" />
     </ItemGroup>
 
     <ItemGroup>
